@@ -7,9 +7,19 @@ import Card from "../components/Card.astro";
 <main class="flex flex-col justify-center items-center text-center">
   <h1 class="sm:text-8xl text-7xl pt-32 py-5">GRL</h1>
   <h1 class="sm:text-8xl text-7xl">WORLD</h1>
-  <Card title="SHOP" body="Hello World" href="/hello" />
+  <!-- <div class=""> -->
+  <img src="./img/cloud.svg" alt="" class="box" />
+  <!-- </div> -->
 </main>
-
+<Card title="SHOP" href="/hello" />
+<script>
+  import { gsap } from "gsap";
+  gsap.to(".box", {
+    x: () => window.innerWidth * 1.5,
+    duration: 20,
+    repeat: 10,
+  });
+</script>
 <style>
   main {
     margin: auto;
@@ -19,9 +29,17 @@ import Card from "../components/Card.astro";
     color: white;
     font-size: 20px;
     line-height: 1.6;
+    padding-bottom: 320px;
   }
   h1 {
     font-family: "TAN-NIMBUS", sans-serif;
     color: #466441;
+  }
+  .box {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    top: 10%;
+    overflow: hidden;
   }
 </style>
