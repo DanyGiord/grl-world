@@ -9,15 +9,16 @@ import Card from "../components/Card.astro";
   <h1 class="sm:text-8xl text-7xl">WORLD</h1>
   <!-- <div class=""> -->
   <img src="./img/cloud.svg" alt="" class="box" />
+  <img src="./img/cloud.svg" alt="" class="box2" />
   <!-- </div> -->
 </main>
 <Card title="SHOP" href="/hello" />
 <script>
   import { gsap } from "gsap";
-  gsap.to(".box", {
-    x: () => window.innerWidth * 1.5,
+  gsap.to(".box, .box2", {
+    x: () => window.innerWidth,
     duration: 20,
-    repeat: 10,
+    repeat: 1000,
   });
 </script>
 <style>
@@ -37,9 +38,16 @@ import Card from "../components/Card.astro";
   }
   .box {
     position: absolute;
-    left: 0;
+    left: -20%;
     z-index: -1;
     top: 10%;
+    overflow: hidden;
+  }
+  .box2 {
+    position: absolute;
+    left: 10%;
+    top: 40%;
+    /* z-index: -1; */
     overflow: hidden;
   }
 </style>
