@@ -5,20 +5,43 @@ import Card from "../components/Card.astro";
 
 <Layout title="GRL WORLD" />
 <main class="flex flex-col justify-center items-center text-center">
-  <h1 class="sm:text-8xl text-7xl pt-32 py-5">GRL</h1>
-  <h1 class="sm:text-8xl text-7xl">WORLD</h1>
+  <h1 class="sm:text-9xl text-7xl pt-32 py-5">GRL</h1>
+  <h1 class="sm:text-9xl text-7xl">WORLD</h1>
   <!-- <div class=""> -->
-  <img src="./img/cloud.svg" alt="" class="box" />
-  <img src="./img/cloud.svg" alt="" class="box2" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box2" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box3" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box5" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box4" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box6" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box7" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box8" />
+  <img src="./img/cloud.svg" alt="Cloud image" class="box9" />
+  <div class="leptir">
+    <img src="./img/leptir.gif" alt="Cloud image" class="w-16" />
+  </div>
   <!-- </div> -->
 </main>
 <Card title="SHOP" href="/hello" />
 <script>
   import { gsap } from "gsap";
-  gsap.to(".box, .box2", {
-    x: () => window.innerWidth,
-    duration: 20,
-    repeat: 1000,
+  gsap.to(
+    ".box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .leptir",
+    {
+      x: "500%",
+      duration: 70,
+      repeat: -1,
+      yoyo: true,
+      ease: "none",
+    }
+  );
+
+  gsap.to(".leptir", {
+    x: "800%",
+    y: "190%",
+    duration: 8,
+    repeat: -1,
+    ease: "none",
   });
 </script>
 <style>
@@ -36,6 +59,20 @@ import Card from "../components/Card.astro";
     font-family: "TAN-NIMBUS", sans-serif;
     color: #466441;
   }
+  /* responsive oblaci */
+  @media (max-width: 767px) {
+    .box,
+    .box2,
+    .box3,
+    .box4,
+    .box5,
+    .box6,
+    .box7,
+    .box8,
+    .box9 {
+      width: 200px;
+    }
+  }
   .box {
     position: absolute;
     left: -20%;
@@ -47,6 +84,64 @@ import Card from "../components/Card.astro";
     position: absolute;
     left: 10%;
     top: 40%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box3 {
+    position: absolute;
+    left: -80%;
+    top: 80%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box4 {
+    position: absolute;
+    left: -125%;
+    top: 40%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box5 {
+    position: absolute;
+    left: -10%;
+    top: 60%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box6 {
+    position: absolute;
+    left: -120%;
+    top: 5%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box7 {
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box8 {
+    position: absolute;
+    left: 80%;
+    top: 70%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .box9 {
+    position: absolute;
+    left: -70%;
+    top: 25%;
+    /* z-index: -1; */
+    overflow: hidden;
+  }
+  .leptir {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    left: -10%;
+    top: 25%;
     /* z-index: -1; */
     overflow: hidden;
   }
