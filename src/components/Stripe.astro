@@ -1,0 +1,64 @@
+---
+
+---
+
+<div class="w-full bg-[#FE939E] border-t-4
+      border-black border-b-4">
+  <div
+    class="text-black flex justify-between items-center text-center h-16 text-xl sm:text-x2l moving_div"
+  >
+    <span>SALE</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>GRL WORLD</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>SALE</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>SEA</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>GRL WORLD</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>SUNSHINE</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>CREATIVE</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>SUN</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+    <span>SALE</span>
+    <span>
+      <img src="./img/smile.png" alt="" class="w-8 h-8 smile" />
+    </span>
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  gsap.to(".smile", {
+    rotation: 720,
+    duration: 3,
+    ease: "none",
+    repeat: -1,
+    yoyo: true,
+  });
+  gsap.to(".moving_div", {
+    x: "-100%",
+    duration: 70,
+    repeat: -1,
+    ease: "linear",
+  });
+</script>

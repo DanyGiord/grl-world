@@ -7,19 +7,21 @@ interface Props {
 const { href, title } = Astro.props;
 ---
 
-<div class="c-header_button">
-  <!-- <p class="c-header_button_label">Nouvelle collection</p> -->
-  <div class="c-header_button_images">
-    <img src="./img/1.jpeg" alt="Grl world image" class="img-1" />
-    <img src="./img/2.jpeg" alt="Grl world image" class="img-2" />
-  </div>
-  <img
-    src="./img/arrow.svg"
-    alt="Grl arrow down"
-    class="c-header_button_arrow"
-  />
-  <div class="c-button-container">
-    <a href={href} class="c-button">{title}</a>
+<div class="bottom-0 absolute items-center">
+  <div class="c-header_button">
+    <!-- <p class="c-header_button_label">Nouvelle collection</p> -->
+    <div class="c-header_button_images">
+      <img src="./img/1.jpeg" alt="Grl world image" class="img-1" />
+      <img src="./img/2.jpeg" alt="Grl world image" class="img-2" />
+    </div>
+    <img
+      src="./img/arrow.svg"
+      alt="Grl arrow down"
+      class="c-header_button_arrow"
+    />
+    <div class="c-button-container">
+      <a href={href} class="c-button">{title}</a>
+    </div>
   </div>
 </div>
 
@@ -27,10 +29,10 @@ const { href, title } = Astro.props;
   .c-header_button {
     display: flex;
     flex-direction: column;
-    margin: auto;
+    align-items: center;
     padding: 1rem;
-    width: 800px;
     max-width: calc(100% - 2rem);
+    bottom: 0;
   }
   .img-1 {
     max-width: 90px;
@@ -44,13 +46,8 @@ const { href, title } = Astro.props;
   }
   .c-header_button_images {
     display: flex;
-    bottom: 12%;
-    left: 30%;
-    /* overflow: hidden; */
-    /* padding-top: 30px; */
     pointer-events: none;
-    position: absolute;
-    right: -30px;
+    margin-bottom: 25%;
   }
   @media (max-width: 767px) {
     .c-app .c-header_button_images {
@@ -58,9 +55,9 @@ const { href, title } = Astro.props;
     }
   }
   .c-header_button_arrow {
-    left: 20%;
     position: absolute;
-    bottom: 10%;
+    margin-right: 100%;
+    bottom: 40%;
   }
   .c-button-container {
     display: flex;
