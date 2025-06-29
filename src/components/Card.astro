@@ -14,11 +14,7 @@ const { href, title } = Astro.props;
       <img src="./img/1.jpeg" alt="Grl world image" class="img-1" />
       <img src="./img/2.jpeg" alt="Grl world image" class="img-2" />
     </div>
-    <img
-      src="./img/arrow.svg"
-      alt="Grl arrow down"
-      class="c-header_button_arrow"
-    />
+    <img src="./img/arrow.svg" alt="Grl arrow down" class="c-header_button_arrow" />
     <div class="c-button-container">
       <a href={href} class="c-button">{title}</a>
     </div>
@@ -31,6 +27,7 @@ const { href, title } = Astro.props;
     flex-direction: column;
     align-items: center;
     padding: 1rem;
+    margin-left: 5%;
     max-width: calc(100% - 2rem);
     bottom: 0;
   }
