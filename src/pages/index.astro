@@ -9,16 +9,17 @@ import New from "../components/New.astro";
 <main class="flex flex-col justify-center items-center text-center h-full">
   <h1 class="sm:text-9xl text-7xl pt-32 py-5">GRL</h1>
   <h1 class="sm:text-9xl text-7xl">WORLD</h1>
-  <!-- <div class=""> -->
-  <img src="./img/cloud.svg" alt="Cloud image" class="box" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box2" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box3" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box5" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box4" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box6" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box7" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box8" />
-  <img src="./img/cloud.svg" alt="Cloud image" class="box9" />
+  <div class="cloud-layer">
+    <img src="./img/cloud.svg" alt="Cloud image" class="box" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box2" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box3" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box5" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box4" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box6" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box7" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box8" />
+    <img src="./img/cloud.svg" alt="Cloud image" class="box9" />
+  </div>
   <!-- <div class="leptir">
     <img src="./img/leptir.gif" alt="Cloud image" class="w-16" />
   </div> -->
@@ -51,6 +52,16 @@ import New from "../components/New.astro";
   h1 {
     font-family: "TAN-NIMBUS", sans-serif;
     color: #466441;
+  }
+  .cloud-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
   }
   /* responsive oblaci */
   @media (max-width: 767px) {
