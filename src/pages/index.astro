@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import Stripe from "../components/Stripe.astro";
+import New from "../components/New.astro";
 ---
 
 <Layout title="GRL WORLD" />
@@ -22,21 +23,19 @@ import Stripe from "../components/Stripe.astro";
     <img src="./img/leptir.gif" alt="Cloud image" class="w-16" />
   </div> -->
   <!-- </div> -->
-  <Card title="SHOP" href="/hello" />
+  <Card title="SHOP" href="https://www.instagram.com/gr1world" />
 </main>
-<Stripe />
+<!-- <Stripe /> -->
+<!-- <New /> -->
 <script>
   import { gsap } from "gsap";
-  gsap.to(
-    ".box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .leptir",
-    {
-      x: "500%",
-      duration: 70,
-      repeat: -1,
-      yoyo: true,
-      ease: "none",
-    }
-  );
+  gsap.to(".box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .leptir", {
+    x: "500%",
+    duration: 70,
+    repeat: -1,
+    yoyo: true,
+    ease: "none",
+  });
 </script>
 <style>
   main {

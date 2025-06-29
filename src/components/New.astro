@@ -1,0 +1,45 @@
+<style>
+  .marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    width: 100%; /* Adjust as needed */
+    position: relative;
+  }
+  .marquee-content {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .marquee-content span {
+    display: inline-block;
+    padding-right: 2rem;
+  }
+</style>
+
+<div class="marquee-container">
+  <div class="marquee-content">
+    <span class="text-5xl"
+      >Your scrolling text or content goes here. Your scrolling text or content
+      goes here.</span
+    >
+    <span class="text-5xl"
+      >Your scrolling text or content goes here. Your scrolling text or content
+      goes here.</span
+    >
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const marqueeContent = document.querySelector(".marquee-content");
+      const contentWidth = marqueeContent.scrollWidth / 2; // Half of the content width (one instance)
+
+      gsap.to(".marquee-content", {
+        x: `-${contentWidth}px`, // Move the entire width of one instance of the content
+        duration: 15, // Duration of the animation (adjust as needed)
+        ease: "linear",
+        repeat: -1, // Infinite repeat
+        repeatDelay: 0, // No delay between repeats
+      });
+    });
+  </script>
+</div>
