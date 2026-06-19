@@ -24,19 +24,126 @@ import New from "../components/New.astro";
     <img src="./img/leptir.gif" alt="Cloud image" class="w-16" />
   </div> -->
   <!-- </div> -->
-  <Card title="SHOP" href="https://www.instagram.com/gr1world" />
+  <Card title="SHOP" href="/shop" />
 </main>
 <!-- <Stripe /> -->
 <!-- <New /> -->
 <script>
   import { gsap } from "gsap";
-  gsap.to(".box, .box2, .box3, .box4, .box5, .box6, .box7, .box8, .box9, .leptir", {
-    x: "500%",
-    duration: 70,
-    repeat: -1,
-    yoyo: true,
-    ease: "none",
-  });
+
+  const mm = gsap.matchMedia();
+
+  mm.add(
+    {
+      motion: "(prefers-reduced-motion: no-preference)",
+      reduceMotion: "(prefers-reduced-motion: reduce)",
+    },
+    (context) => {
+      const { reduceMotion } = context.conditions;
+
+      // H1 entrance
+      gsap.from("h1", {
+        y: reduceMotion ? 0 : 60,
+        autoAlpha: 0,
+        duration: reduceMotion ? 0.01 : 1.2,
+        stagger: 0.15,
+        ease: "power3.out",
+        delay: 0.2,
+      });
+
+      // Card entrance
+      gsap.from(".c-header_button", {
+        y: reduceMotion ? 0 : 40,
+        autoAlpha: 0,
+        duration: reduceMotion ? 0.01 : 1,
+        delay: 0.8,
+        ease: "power2.out",
+      });
+
+      if (!reduceMotion) {
+        // Clouds — varied speeds, vertical drift, staggered delays
+        const cloudSelectors = [".box", ".box2", ".box3", ".box4", ".box5", ".box6", ".box7", ".box8", ".box9"];
+        const durations =  [75, 55, 90, 65, 80, 50, 70, 60, 85];
+        const yDrifts =    [15, -10, 20, -15, 10, -20, 12, -8, 18];
+        const startDelays = [0,   5,  12,   3, 18,   8, 25,  2, 14];
+
+        cloudSelectors.forEach((sel, i) => {
+          gsap.to(sel, {
+            x: "500%",
+            duration: durations[i],
+            repeat: -1,
+            yoyo: true,
+            ease: "none",
+            delay: startDelays[i],
+          });
+          gsap.to(sel, {
+            y: yDrifts[i],
+            duration: durations[i] / 7,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: startDelays[i],
+          });
+        });
+
+        // Image float
+        gsap.to(".img-1", {
+          y: -8,
+          duration: 2.8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+        gsap.to(".img-2", {
+          y: -8,
+          duration: 3.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: 0.6,
+        });
+
+        // Arrow bob
+        gsap.to(".c-header_button_arrow", {
+          y: 8,
+          duration: 1.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+
+        // Button hover + click transition
+        const btn = document.querySelector(".c-button") as HTMLAnchorElement | null;
+        if (btn) {
+          btn.addEventListener("mouseenter", () => {
+            gsap.to(btn, { scale: 1.05, duration: 0.2, ease: "power1.out" });
+          });
+          btn.addEventListener("mouseleave", () => {
+            gsap.to(btn, { scale: 1, duration: 0.2, ease: "power1.in" });
+          });
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const href = btn.getAttribute("href") || "/shop";
+
+            const curtain = document.createElement("div");
+            curtain.style.cssText =
+              "position:fixed;inset:0;background:#f6aad9;z-index:9999;transform-origin:bottom;will-change:transform;";
+            gsap.set(curtain, { scaleY: 0 });
+            document.body.appendChild(curtain);
+
+            gsap.to("h1", { y: -40, autoAlpha: 0, duration: 0.35, stagger: 0.08, ease: "power2.in" });
+            gsap.to(".c-header_button", { y: -20, autoAlpha: 0, duration: 0.25, ease: "power2.in" });
+            gsap.to(curtain, {
+              scaleY: 1,
+              duration: 0.65,
+              ease: "power3.inOut",
+              onComplete: () => { window.location.href = href; },
+            });
+          });
+        }
+      }
+    }
+  );
 </script>
 <style>
   main {

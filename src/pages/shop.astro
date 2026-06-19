@@ -1,0 +1,681 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="SHOP — GRL WORLD" />
+
+<div id="entry-curtain"></div>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <video class="hero-video" src="/video/hero.mp4" autoplay muted loop playsinline></video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="word">GRL</span>
+        <span class="word">WORLD</span>
+      </h1>
+      <p class="hero-sub">COLLECTION</p>
+    </div>
+    <a href="/" class="back-link">← BACK</a>
+    <a href="#collection" class="scroll-hint">SCROLL ↓</a>
+  </section>
+
+  <!-- ── MARQUEE ── -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      {Array.from({ length: 8 }, () => (
+        <span class="marquee-item">GRL WORLD &nbsp;·&nbsp; BIKINIS &nbsp;·&nbsp; GYM SET &nbsp;·&nbsp; STRIPE SET &nbsp;·&nbsp; DM TO ORDER &nbsp;·&nbsp;</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ── COLLECTION ── -->
+  <section class="collection" id="collection">
+
+    <!-- ══ BIKINIS ══ -->
+    <div class="group-label">
+      <span class="group-num">01</span>
+      <span class="group-name">BIKINIS</span>
+    </div>
+
+    <div class="editorial-row">
+      <div class="ed-big">
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p5.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      </div>
+      <div class="ed-stack">
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p26.jpg" alt="" loading="lazy" style="object-position: center 100%; transform: translateY(30%);" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p27.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      {[7,8,9,10,12,19].map(n => (
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src={`/img/shop/p${n}.jpg`} alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      ))}
+    </div>
+
+    <div class="pair">
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+        <img src="/img/shop/p24.jpg" alt="" loading="lazy" />
+        <div class="card-hover"><span>DM TO ORDER</span></div>
+      </a>
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+        <img src="/img/shop/p25.jpg" alt="" loading="lazy" />
+        <div class="card-hover"><span>DM TO ORDER</span></div>
+      </a>
+    </div>
+
+    <div class="grid-2">
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+        <img src="/img/shop/p28.jpg" alt="" loading="lazy" style="object-position: center top;" />
+        <div class="card-hover"><span>DM TO ORDER</span></div>
+      </a>
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+        <img src="/img/shop/p31.jpg" alt="" loading="lazy" style="object-position: center top;" />
+        <div class="card-hover"><span>DM TO ORDER</span></div>
+      </a>
+    </div>
+
+    <!-- ══ GYM SET ══ -->
+    <div class="group-label">
+      <span class="group-num">02</span>
+      <span class="group-name">GYM SET</span>
+    </div>
+
+    <div class="editorial-row editorial-row--reverse">
+      <div class="ed-stack">
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p15.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p16.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      </div>
+      <div class="ed-big">
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p14.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- BLACK row -->
+    <div class="grid-4">
+      {["p4","p34","gym1","gym2"].map(n => (
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src={`/img/shop/${n}.jpg`} alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      ))}
+    </div>
+
+    <!-- BLACK → GREY pair -->
+    <div class="pair">
+      {["p1","p6"].map(n => (
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src={`/img/shop/${n}.jpg`} alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      ))}
+    </div>
+
+    <!-- GREY → BLUE row -->
+    <div class="grid-3">
+      {["p23","p30","p18"].map(n => (
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src={`/img/shop/${n}.jpg`} alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      ))}
+    </div>
+
+    <!-- WHITE / LIGHT pair -->
+    <div class="pair">
+      {["p3","p2"].map(n => (
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src={`/img/shop/${n}.jpg`} alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      ))}
+    </div>
+
+    <!-- GYM VIDEO VERTICAL + WIDE VIDEO -->
+    <div class="gym-videos">
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card card-vertical">
+        <video src="/video/gymvideo.mp4" autoplay muted loop playsinline></video>
+        <div class="card-hover"><span>DM TO ORDER</span></div>
+      </a>
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card card-video-side">
+        <video src="/video/v2.mp4" autoplay muted loop playsinline></video>
+        <div class="card-hover"><span>DM TO ORDER</span></div>
+      </a>
+    </div>
+
+    <!-- ══ STRIPE SET ══ -->
+    <div class="group-label">
+      <span class="group-num">03</span>
+      <span class="group-name">STRIPE SET</span>
+    </div>
+
+    <div class="editorial-row">
+      <div class="ed-big">
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p20.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      </div>
+      <div class="ed-stack">
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p21.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src="/img/shop/p22.jpg" alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      {[11,13,17,29,33,32].map(n => (
+        <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="card">
+          <img src={`/img/shop/p${n}.jpg`} alt="" loading="lazy" />
+          <div class="card-hover"><span>DM TO ORDER</span></div>
+        </a>
+      ))}
+    </div>
+
+
+  </section>
+
+  <!-- ── MISSION ── -->
+  <section class="mission">
+    <div class="mission-inner">
+      <div class="mission-top-line"></div>
+      <div class="mission-layout">
+        <div class="mission-left">
+          <h2 class="mission-title">OUR<br>MISSION</h2>
+        </div>
+        <div class="mission-right">
+          <p class="mission-body">GR1WORLD IS COMING SOON, LIKE A RAY OF SUNSHINE ON THE SHORE, BRINGING CREATIVE SWIMWEAR AND SUMMER OUTFITS FOR THE BEACH. EXPECT MAGICAL BIKINI COMBINATIONS THAT WILL HELP YOU SHINE LIKE SEA FOAM. GET READY TO EMBARK ON A JOURNEY WHERE BEAUTY DANCES WITH THE WAVES AND STYLE WHISPERS IN THE SEA BREEZE, AS GR1WORLD UNVEILS ITS ENCHANTING CREATIONS FOR YOU TO EMBRACE UNDER THE SUN'S GOLDEN GAZE.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA inside mission block -->
+    <div class="cta-block">
+      <div class="cta-divider"></div>
+      <p class="cta-label">FOR ORDERS & ENQUIRIES</p>
+      <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="cta-btn">
+        @GR1WORLD
+      </a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>© {new Date().getFullYear()} GRL WORLD. All rights reserved.</p>
+  </footer>
+
+</main>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const entryCurtain = document.getElementById("entry-curtain")!;
+  const mm = gsap.matchMedia();
+
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+    /* ─── ENTRY CURTAIN ─── */
+    gsap.to(entryCurtain, {
+      scaleY: 0,
+      duration: 0.7,
+      ease: "power3.inOut",
+      onComplete: () => entryCurtain.remove(),
+    });
+
+    /* ─── HERO ─── */
+    gsap.from(".word", {
+      y: 80, autoAlpha: 0, duration: 1.3, ease: "power3.out",
+      stagger: 0.15, delay: 0.4,
+    });
+    gsap.from(".hero-sub",    { y: 30,  autoAlpha: 0, duration: 0.9, ease: "power2.out", delay: 0.85 });
+    gsap.from(".back-link",   { x: -20, autoAlpha: 0, duration: 0.7, ease: "power2.out", delay: 0.5 });
+    gsap.from(".scroll-hint", { autoAlpha: 0, duration: 0.7, delay: 1.2 });
+
+    /* ─── HERO PARALLAX ─── */
+    gsap.to(".hero-video", {
+      scale: 1.12, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
+    });
+
+    gsap.to(".scroll-hint", {
+      autoAlpha: 0,
+      scrollTrigger: { trigger: ".hero", start: "20% top", end: "40% top", scrub: true },
+    });
+
+    /* ─── MARQUEE ─── */
+    gsap.from(".marquee-wrap", {
+      autoAlpha: 0, duration: 0.8,
+      scrollTrigger: { trigger: ".marquee-wrap", start: "top 92%" },
+    });
+
+    /* ─── GROUP LABELS ─── */
+    document.querySelectorAll(".group-label").forEach((label) => {
+      const num  = label.querySelector(".group-num");
+      const name = label.querySelector(".group-name");
+      const st   = { trigger: label, start: "top 88%" };
+      gsap.from(label, { scaleX: 0, transformOrigin: "left", duration: 0.9, ease: "power3.out", scrollTrigger: st });
+      gsap.from(num,   { x: -50, autoAlpha: 0, duration: 0.9, ease: "power3.out", delay: 0.15, scrollTrigger: st });
+      gsap.from(name,  { x: 30,  autoAlpha: 0, duration: 0.7, ease: "power2.out", delay: 0.3,  scrollTrigger: st });
+    });
+
+    /* ─── CARDS: CLIP REVEAL + IMAGE PARALLAX ─── */
+    document.querySelectorAll(".card").forEach((card) => {
+      gsap.from(card, {
+        clipPath: "inset(100% 0 0 0)",
+        duration: 1.1, ease: "power4.out",
+        scrollTrigger: { trigger: card, start: "top 90%" },
+      });
+
+      const media = card.querySelector("img, video");
+      if (media) {
+        gsap.fromTo(media, { y: "-8%" }, {
+          y: "8%", ease: "none",
+          scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true },
+        });
+      }
+    });
+
+    /* ─── MISSION + CTA ─── */
+    gsap.from(".mission-top-line", {
+      scaleX: 0, transformOrigin: "left", duration: 1.2, ease: "power3.out",
+      scrollTrigger: { trigger: ".mission", start: "top 85%" },
+    });
+    gsap.from(".mission-title", {
+      autoAlpha: 0, duration: 1, ease: "power2.out", delay: 0.2,
+      scrollTrigger: { trigger: ".mission", start: "top 85%" },
+    });
+    gsap.from(".mission-body", {
+      y: 35, autoAlpha: 0, duration: 1.1, ease: "power2.out", delay: 0.4,
+      scrollTrigger: { trigger: ".mission", start: "top 85%" },
+    });
+    gsap.from(".cta-divider", {
+      scaleX: 0, transformOrigin: "left", duration: 1, ease: "power3.out",
+      scrollTrigger: { trigger: ".cta-block", start: "top 88%" },
+    });
+    gsap.from(".cta-label", {
+      y: 20, autoAlpha: 0, duration: 0.8, delay: 0.2,
+      scrollTrigger: { trigger: ".cta-block", start: "top 88%" },
+    });
+    gsap.from(".cta-btn", {
+      y: 20, autoAlpha: 0, duration: 0.7, delay: 0.4,
+      scrollTrigger: { trigger: ".cta-block", start: "top 88%" },
+    });
+
+    /* ─── BACK LINK EXIT ─── */
+    const backLink = document.querySelector(".back-link") as HTMLAnchorElement | null;
+    if (backLink) {
+      backLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = backLink.getAttribute("href") || "/";
+        const curtain = document.createElement("div");
+        curtain.style.cssText = "position:fixed;inset:0;background:#f6aad9;z-index:9999;transform-origin:bottom;will-change:transform;";
+        gsap.set(curtain, { scaleY: 0 });
+        document.body.appendChild(curtain);
+        gsap.to(".word, .hero-sub", { y: -40, autoAlpha: 0, duration: 0.3, stagger: 0.06, ease: "power2.in" });
+        gsap.to(curtain, {
+          scaleY: 1, duration: 0.65, ease: "power3.inOut",
+          onComplete: () => { window.location.href = href; },
+        });
+      });
+    }
+  });
+
+  mm.add("(prefers-reduced-motion: reduce)", () => {
+    entryCurtain.remove();
+    document.querySelectorAll(".card").forEach(c => {
+      (c as HTMLElement).style.clipPath = "none";
+    });
+  });
+</script>
+
+<style>
+  main {
+    margin: 0;
+    padding: 0;
+    background: #fcd8da;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-video {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100vh; height: 100vw;
+    object-fit: cover;
+    transform: translate(-50%, -50%) rotate(270deg);
+    z-index: 0;
+    will-change: transform;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  }
+  .hero-title {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(3.5rem, 14vw, 10rem);
+    color: #fff;
+    line-height: 1;
+    margin: 0;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 1.2rem;
+  }
+  .word { display: block; }
+  .hero-sub {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(0.65rem, 2vw, 1rem);
+    color: #f6aad9;
+    letter-spacing: 0.55em;
+    margin: 0.5rem 0 0;
+  }
+  .back-link {
+    position: absolute; top: 1.5rem; left: 1.5rem; z-index: 3;
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #fff; text-decoration: none;
+    font-size: 0.78rem; letter-spacing: 0.15em;
+    opacity: 0.8; transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 1; }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%;
+    transform: translateX(-50%); z-index: 3;
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.6rem; letter-spacing: 0.35em; text-decoration: none;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden; background: #466441;
+    padding: 0.9rem 0; white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 36s linear infinite;
+  }
+  .marquee-item {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #fcd8da; font-size: 0.72rem; letter-spacing: 0.2em;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── COLLECTION ── */
+  .collection {
+    padding: 4rem 1rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  /* ── GROUP LABEL ── */
+  .group-label {
+    display: flex; align-items: baseline; gap: 1.2rem;
+    padding: 3rem 0 0.5rem;
+    border-bottom: 2px solid #466441;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+  }
+  .group-num {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: #fcd8da; line-height: 1;
+    -webkit-text-stroke: 2px #466441;
+    display: block;
+  }
+  .group-name {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(0.75rem, 2vw, 1.2rem);
+    color: #466441; letter-spacing: 0.45em;
+    display: block;
+  }
+
+  /* ── CARD ── */
+  .card {
+    display: block; overflow: hidden;
+    position: relative; background: #e8b4b8;
+    text-decoration: none;
+    clip-path: inset(0% 0 0 0);
+  }
+  .card img, .card video {
+    width: 100%; height: 110%;
+    object-fit: cover; display: block;
+    transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+  .card:hover img, .card:hover video {
+    transform: scale(1.06) translateY(0%) !important;
+  }
+  .card-hover {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end; padding: 1.2rem;
+    background: linear-gradient(to top, rgba(28,24,27,0.6) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .card:hover .card-hover { opacity: 1; }
+  .card-hover span {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #fff; font-size: 0.62rem; letter-spacing: 0.28em;
+  }
+
+  /* ── EDITORIAL ROW ── */
+  .editorial-row {
+    display: grid; grid-template-columns: 2fr 1fr;
+    gap: 1rem; height: 600px; overflow: hidden;
+  }
+  .editorial-row--reverse { grid-template-columns: 1fr 2fr; }
+  .editorial-row--reverse .ed-stack { order: -1; }
+  .ed-big { height: 100%; min-height: 0; }
+  .ed-big .card { height: 100%; }
+  .ed-stack { display: grid; grid-template-rows: 1fr 1fr; gap: 1rem; height: 100%; min-height: 0; }
+  .ed-stack .card { height: 100%; min-height: 0; }
+
+  @media (max-width: 700px) {
+    .editorial-row, .editorial-row--reverse {
+      grid-template-columns: 1fr; height: auto; overflow: visible;
+    }
+    .editorial-row--reverse .ed-stack { order: 0; }
+    .ed-big .card { aspect-ratio: 3/4; height: auto; }
+    .ed-stack { height: auto; }
+    .ed-stack .card { aspect-ratio: 3/4; height: auto; }
+  }
+
+  /* ── GRID 3 ── */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .grid-3 .card { aspect-ratio: 3/4; }
+  @media (max-width: 700px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ── GRID 4 ── */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .grid-4 .card { aspect-ratio: 2/3; }
+  @media (max-width: 700px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ── GRID 2 ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-2 .card { aspect-ratio: 4/5; }
+
+  /* ── PAIR ── */
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; height: 520px; overflow: hidden; }
+  .pair .card { height: 100%; min-height: 0; }
+  @media (max-width: 700px) {
+    .pair { grid-template-columns: 1fr; height: auto; overflow: visible; }
+    .pair .card { aspect-ratio: 3/4; height: auto; }
+  }
+
+  /* ── SPAN 2 CARD ── */
+  .card-span2 { grid-column: span 2; aspect-ratio: 4/3; }
+
+  /* ── VIDEO FEATURE ── */
+  .card-video { aspect-ratio: 16/9; width: 100%; }
+
+  /* ── GYM VIDEOS: vertical portrait + wide side by side ── */
+  .gym-videos {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    height: 600px;
+    overflow: hidden;
+  }
+  .card-vertical { height: 100%; }
+  .card-vertical video { width: 100%; height: 100%; object-fit: cover; }
+  .card-video-side { height: 100%; }
+  .card-video-side video { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (max-width: 700px) {
+    .gym-videos { grid-template-columns: 1fr; height: auto; overflow: visible; }
+    .card-vertical { aspect-ratio: 9/16; height: auto; }
+    .card-video-side { aspect-ratio: 16/9; height: auto; }
+  }
+
+  /* ── MISSION + CTA (unified dark block) ── */
+  .mission {
+    background: #466441;
+    padding: 0 2rem;
+  }
+  .mission-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 0 4rem;
+  }
+  .mission-top-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(246,170,217,0.35);
+    margin-bottom: 4rem;
+  }
+  .mission-layout {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 4rem;
+    align-items: start;
+    overflow: visible;
+  }
+  .mission-left { overflow: visible; }
+  .mission-title {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    color: #f6aad9;
+    line-height: 1.15;
+    margin: 0;
+    position: sticky;
+    top: 2rem;
+  }
+  .mission-body {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(0.82rem, 1.6vw, 1.1rem);
+    color: rgba(255,255,255,0.82);
+    line-height: 1.85;
+    margin: 0;
+  }
+
+  .cta-block {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 0 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .cta-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(246,170,217,0.35);
+    margin-bottom: 1rem;
+  }
+  .cta-label {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(246,170,217,0.65);
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    letter-spacing: 0.5em;
+    margin: 0;
+  }
+  .cta-btn {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #466441;
+    background: #f6aad9;
+    border: 2px solid #f6aad9;
+    border-radius: 2px;
+    padding: 16px 56px;
+    text-decoration: none;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    letter-spacing: 0.2em;
+    display: inline-block;
+    transition: background 0.3s, color 0.3s;
+  }
+  .cta-btn:hover {
+    background: transparent;
+    color: #f6aad9;
+  }
+
+  @media (max-width: 700px) {
+    .mission-layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .mission-title { position: static; }
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    padding: 1.8rem 2rem;
+    text-align: center;
+    background: #35512e;
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── CURTAIN ── */
+  #entry-curtain {
+    position: fixed; inset: 0; background: #f6aad9;
+    z-index: 9999; transform-origin: top; will-change: transform;
+  }
+</style>
