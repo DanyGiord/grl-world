@@ -6,6 +6,9 @@ import Layout from "../layouts/Layout.astro";
 
 <div id="entry-curtain"></div>
 
+<div class="stk-layer" aria-hidden="true"></div>
+<img id="gummy-btn" src="/img/collage/gummy-bear.png" />
+
 <main>
 
   <!-- ── HERO ── -->
@@ -229,11 +232,18 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </section>
 
-  <footer class="site-footer">
-    <p>© {new Date().getFullYear()} GRL WORLD. All rights reserved.</p>
-  </footer>
 
 </main>
+
+<!-- ── MOBILE LIGHTBOX ── -->
+<div id="lb-overlay">
+  <button id="lb-close">✕</button>
+  <p id="lb-cat"></p>
+  <img id="lb-img" src="" alt="" />
+  <button id="lb-prev">‹</button>
+  <button id="lb-next">›</button>
+  <p id="lb-counter"></p>
+</div>
 
 <script>
   import { gsap } from "gsap";
@@ -244,6 +254,26 @@ import Layout from "../layouts/Layout.astro";
   const mm = gsap.matchMedia();
 
   mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+    /* ─── GUMMY BEAR SCROLL-TO-TOP ─── */
+    const gummy = document.getElementById("gummy-btn") as HTMLElement | null;
+    if (gummy) {
+      // float animation
+      gsap.to(gummy, { y: -10, duration: 2.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+      // show after scrolling past hero
+      ScrollTrigger.create({
+        trigger: ".hero",
+        start: "bottom 80%",
+        onEnter: () => gsap.to(gummy, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }),
+        onLeaveBack: () => gsap.to(gummy, { autoAlpha: 0, scale: 0.5, duration: 0.3 }),
+      });
+
+      gummy.addEventListener("click", () => {
+        gsap.to(gummy, { rotation: -16 + 360, duration: 0.6, ease: "power2.inOut", onComplete: () => gsap.set(gummy, { rotation: -16 }) });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
 
     /* ─── ENTRY CURTAIN ─── */
     gsap.to(entryCurtain, {
@@ -357,6 +387,88 @@ import Layout from "../layouts/Layout.astro";
       (c as HTMLElement).style.clipPath = "none";
     });
   });
+
+  /* ── MOBILE LIGHTBOX ── */
+  (function () {
+    if (window.innerWidth > 768) return;
+
+    const overlay   = document.getElementById("lb-overlay")!;
+    const lbImg     = document.getElementById("lb-img") as HTMLImageElement;
+    const lbCat     = document.getElementById("lb-cat")!;
+    const lbCounter = document.getElementById("lb-counter")!;
+    const btnClose  = document.getElementById("lb-close")!;
+    const btnPrev   = document.getElementById("lb-prev")!;
+    const btnNext   = document.getElementById("lb-next")!;
+
+    // Build groups per category
+    type Group = { name: string; imgs: HTMLImageElement[] };
+    const groups: Group[] = [];
+    const imgToGroup = new Map<HTMLImageElement, { group: Group; idx: number }>();
+
+    document.querySelectorAll<HTMLElement>(".group-label").forEach((label) => {
+      const name = label.querySelector(".group-name")?.textContent?.trim() || "";
+      const imgs: HTMLImageElement[] = [];
+      let el = label.nextElementSibling;
+      while (el && !el.classList.contains("group-label")) {
+        el.querySelectorAll<HTMLImageElement>(".card img").forEach(img => imgs.push(img));
+        el = el.nextElementSibling;
+      }
+      const group: Group = { name, imgs };
+      groups.push(group);
+      imgs.forEach((img, idx) => imgToGroup.set(img, { group, idx }));
+    });
+
+    let currentGroup: Group = groups[0];
+    let currentIdx = 0;
+
+    function updateUI() {
+      lbImg.src = currentGroup.imgs[currentIdx].src;
+      lbCat.textContent = currentGroup.name;
+      lbCounter.textContent = `${currentIdx + 1} / ${currentGroup.imgs.length}`;
+    }
+
+    function open(img: HTMLImageElement) {
+      const info = imgToGroup.get(img);
+      if (!info) return;
+      currentGroup = info.group;
+      currentIdx = info.idx;
+      updateUI();
+      gsap.set(overlay, { display: "flex" });
+      gsap.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: "power2.out" });
+      document.body.style.overflow = "hidden";
+    }
+
+    function close() {
+      gsap.to(overlay, { autoAlpha: 0, duration: 0.25, onComplete: () => gsap.set(overlay, { display: "none" }) });
+      document.body.style.overflow = "";
+    }
+
+    function navigate(delta: number) {
+      const dir = delta > 0 ? 40 : -40;
+      currentIdx = (currentIdx + delta + currentGroup.imgs.length) % currentGroup.imgs.length;
+      gsap.fromTo(lbImg, { autoAlpha: 0, x: dir }, { autoAlpha: 1, x: 0, duration: 0.25, ease: "power2.out" });
+      updateUI();
+    }
+
+    // Wire up cards
+    imgToGroup.forEach((_info, img) => {
+      const card = img.closest("a");
+      if (!card) return;
+      card.addEventListener("click", (e) => { e.preventDefault(); open(img); });
+    });
+
+    btnClose.addEventListener("click", close);
+    btnPrev.addEventListener("click", () => navigate(-1));
+    btnNext.addEventListener("click", () => navigate(1));
+
+    let startX = 0;
+    overlay.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    overlay.addEventListener("touchend", (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+    });
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  })();
 </script>
 
 <style>
@@ -365,6 +477,75 @@ import Layout from "../layouts/Layout.astro";
     padding: 0;
     background: #fcd8da;
   }
+
+  /* ── MOBILE LIGHTBOX ── */
+  #lb-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0.92);
+    align-items: center; justify-content: center;
+    visibility: hidden; opacity: 0;
+  }
+  #lb-cat {
+    position: absolute; top: 4rem; left: 50%; transform: translateX(-50%);
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.2em;
+    color: #f6aad9; margin: 0; white-space: nowrap;
+  }
+  #lb-counter {
+    position: absolute; bottom: 5rem; left: 50%; transform: translateX(-50%);
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: 0.9rem; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.7); margin: 0;
+    white-space: nowrap;
+  }
+  #lb-img {
+    max-width: 94vw; max-height: 82vh;
+    object-fit: contain;
+    border-radius: 4px;
+    user-select: none; pointer-events: none;
+  }
+  #lb-close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    font-size: 1.6rem; color: #fff; background: none; border: none;
+    cursor: pointer; line-height: 1; padding: 0.5rem;
+  }
+  #lb-prev, #lb-next {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 2.5rem; color: #fff; background: none; border: none;
+    cursor: pointer; padding: 0.5rem 1rem; line-height: 1; opacity: 0.7;
+  }
+  #lb-prev { left: 0.5rem; }
+  #lb-next { right: 0.5rem; }
+  @media (min-width: 769px) { #lb-overlay { display: none !important; } }
+
+  /* ── COLLAGE STICKERS ── */
+  .stk-layer {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 10;
+    overflow: hidden;
+  }
+  .stk {
+    position: absolute; user-select: none;
+    will-change: transform;
+    filter: drop-shadow(0 4px 14px rgba(0,0,0,0.2));
+  }
+  @media (max-width: 900px) { .stk { display: none; } }
+
+  /* ── GUMMY BEAR SCROLL-TO-TOP ── */
+  #gummy-btn {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    width: 72px;
+    z-index: 100;
+    cursor: pointer;
+    pointer-events: auto;
+    opacity: 0;
+    transform: rotate(-16deg);
+    filter: drop-shadow(0 4px 14px rgba(0,0,0,0.25));
+    transition: transform 0.2s ease;
+  }
+  #gummy-btn:hover { transform: rotate(-16deg) scale(1.12); }
 
   /* ── HERO ── */
   .hero {
@@ -385,9 +566,18 @@ import Layout from "../layouts/Layout.astro";
     z-index: 0;
     will-change: transform;
   }
+  @media (max-width: 768px) {
+    .hero-video {
+      width: 100lvh; height: 100lvw;
+      min-width: 100lvh; min-height: 100lvw;
+      transform: translate(-50%, -50%) rotate(270deg);
+      object-fit: cover;
+    }
+    .hero-overlay { background: rgba(0,0,0,0.20) !important; }
+  }
   .hero-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%);
+    background: rgba(0,0,0,0.20);
     z-index: 1;
   }
   .hero-content {
@@ -411,6 +601,21 @@ import Layout from "../layouts/Layout.astro";
     color: #f6aad9;
     letter-spacing: 0.55em;
     margin: 0.5rem 0 0;
+  }
+  @media (max-width: 768px) {
+    .hero-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+    .hero-title {
+      font-size: clamp(5rem, 22vw, 8rem);
+      gap: 1.5rem;
+    }
+    .hero-sub {
+      font-size: clamp(0.75rem, 3.5vw, 1rem);
+    }
   }
   .back-link {
     position: absolute; top: 1.5rem; left: 1.5rem; z-index: 3;
@@ -662,16 +867,6 @@ import Layout from "../layouts/Layout.astro";
     .mission-title { position: static; }
   }
 
-  /* ── FOOTER ── */
-  .site-footer {
-    padding: 1.8rem 2rem;
-    text-align: center;
-    background: #35512e;
-    font-family: "TAN-NIMBUS", sans-serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.4);
-  }
 
   /* ── CURTAIN ── */
   #entry-curtain {

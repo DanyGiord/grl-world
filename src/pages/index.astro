@@ -9,25 +9,24 @@ import New from "../components/New.astro";
 <main class="flex flex-col justify-center items-center text-center h-full">
   <h1 class="sm:text-9xl text-7xl pt-32 py-5">GRL</h1>
   <h1 class="sm:text-9xl text-7xl">WORLD</h1>
+  <p class="tagline">Creative Swimwear &nbsp;·&nbsp; Beach Outfits &nbsp;·&nbsp; Summer Style</p>
   <div class="cloud-layer">
-    <img src="./img/cloud.svg" alt="Cloud image" class="box" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box2" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box3" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box5" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box4" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box6" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box7" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box8" />
-    <img src="./img/cloud.svg" alt="Cloud image" class="box9" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="88"  data-y="8"   data-scale="1.0" data-op="0.72" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="62"  data-y="35"  data-scale="0.65" data-op="0.50" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="105" data-y="78"  data-scale="1.2"  data-op="0.80" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="74"  data-y="52"  data-scale="0.80" data-op="0.60" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="50"  data-y="20"  data-scale="0.55" data-op="0.42" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="95"  data-y="65"  data-scale="1.1"  data-op="0.68" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="68"  data-y="42"  data-scale="0.70" data-op="0.55" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="115" data-y="88"  data-scale="1.35" data-op="0.85" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="80"  data-y="15"  data-scale="0.90" data-op="0.65" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="57"  data-y="58"  data-scale="0.60" data-op="0.45" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="100" data-y="30"  data-scale="1.15" data-op="0.75" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="72"  data-y="70"  data-scale="0.75" data-op="0.58" />
+    <img src="./img/cloud.svg" alt="" class="cl" data-speed="120" data-y="92"  data-scale="1.4"  data-op="0.88" />
   </div>
-  <!-- <div class="leptir">
-    <img src="./img/leptir.gif" alt="Cloud image" class="w-16" />
-  </div> -->
-  <!-- </div> -->
   <Card title="SHOP" href="/shop" />
 </main>
-<!-- <Stripe /> -->
-<!-- <New /> -->
 <script>
   import { gsap } from "gsap";
 
@@ -51,6 +50,15 @@ import New from "../components/New.astro";
         delay: 0.2,
       });
 
+      // Tagline entrance
+      gsap.from(".tagline", {
+        y: reduceMotion ? 0 : 20,
+        autoAlpha: 0,
+        duration: reduceMotion ? 0.01 : 1,
+        ease: "power2.out",
+        delay: 0.6,
+      });
+
       // Card entrance
       gsap.from(".c-header_button", {
         y: reduceMotion ? 0 : 40,
@@ -61,28 +69,42 @@ import New from "../components/New.astro";
       });
 
       if (!reduceMotion) {
-        // Clouds — varied speeds, vertical drift, staggered delays
-        const cloudSelectors = [".box", ".box2", ".box3", ".box4", ".box5", ".box6", ".box7", ".box8", ".box9"];
-        const durations =  [75, 55, 90, 65, 80, 50, 70, 60, 85];
-        const yDrifts =    [15, -10, 20, -15, 10, -20, 12, -8, 18];
-        const startDelays = [0,   5,  12,   3, 18,   8, 25,  2, 14];
+        // Clouds — continuous one-direction drift, varied scale/opacity/speed
+        const W = window.innerWidth;
+        const clouds = document.querySelectorAll<HTMLElement>(".cl");
+        const n = clouds.length;
+        const yDrifts = [14,-11,18,-9,12,-16,10,-13,15,-8,20,-12,16];
 
-        cloudSelectors.forEach((sel, i) => {
-          gsap.to(sel, {
-            x: "500%",
-            duration: durations[i],
-            repeat: -1,
-            yoyo: true,
-            ease: "none",
-            delay: startDelays[i],
+        clouds.forEach((el, i) => {
+          const speed   = parseFloat(el.dataset.speed  || "80");
+          const yPct    = parseFloat(el.dataset.y      || "50");
+          const scale   = parseFloat(el.dataset.scale  || "1");
+          const opacity = parseFloat(el.dataset.op     || "0.7");
+
+          // Position vertically via top, remove old left
+          gsap.set(el, {
+            top: `${yPct}%`,
+            scale,
+            opacity,
+            x: -320,
           });
-          gsap.to(sel, {
-            y: yDrifts[i],
-            duration: durations[i] / 7,
+
+          // Continuous drift left→right, stagger by fraction of duration
+          gsap.to(el, {
+            x: W + 320,
+            duration: speed,
+            repeat: -1,
+            ease: "none",
+            delay: -(speed * i / n), // negative delay → already mid-flight at load
+          });
+
+          // Gentle vertical bob
+          gsap.to(el, {
+            y: yDrifts[i % yDrifts.length],
+            duration: speed / 9,
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
-            delay: startDelays[i],
           });
         });
 
@@ -145,6 +167,9 @@ import New from "../components/New.astro";
     }
   );
 </script>
+<style is:global>
+  html, body { overflow: hidden; height: 100%; }
+</style>
 <style>
   main {
     margin: auto;
@@ -160,83 +185,25 @@ import New from "../components/New.astro";
     font-family: "TAN-NIMBUS", sans-serif;
     color: #466441;
   }
+  .tagline {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(0.55rem, 1vw, 0.75rem);
+    color: #466441;
+    margin: 1.2rem 0 0;
+  }
   .cloud-layer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    inset: 0;
     pointer-events: none;
     z-index: -1;
+    overflow: hidden;
   }
-  /* responsive oblaci */
+  .cl {
+    position: absolute;
+    left: 0;
+    width: 320px;
+  }
   @media (max-width: 767px) {
-    .box,
-    .box2,
-    .box3,
-    .box4,
-    .box5,
-    .box6,
-    .box7,
-    .box8,
-    .box9 {
-      width: 200px;
-    }
-  }
-  .box {
-    position: absolute;
-    left: -20%;
-    z-index: -1;
-    top: 10%;
-    overflow: hidden;
-  }
-  .box2 {
-    position: absolute;
-    left: 10%;
-    top: 40%;
-    overflow: hidden;
-  }
-  .box3 {
-    position: absolute;
-    left: -80%;
-    top: 80%;
-    overflow: hidden;
-  }
-  .box4 {
-    position: absolute;
-    left: -125%;
-    top: 40%;
-    overflow: hidden;
-  }
-  .box5 {
-    position: absolute;
-    left: -10%;
-    top: 60%;
-    overflow: hidden;
-  }
-  .box6 {
-    position: absolute;
-    left: -120%;
-    top: 5%;
-    overflow: hidden;
-  }
-  .box7 {
-    position: absolute;
-    left: 50%;
-    top: 5%;
-    overflow: hidden;
-  }
-  .box8 {
-    position: absolute;
-    left: 80%;
-    top: 70%;
-    overflow: hidden;
-  }
-  .box9 {
-    position: absolute;
-    left: -70%;
-    top: 25%;
-    overflow: hidden;
+    .cl { width: 180px; }
   }
 </style>
