@@ -36,6 +36,10 @@ import GradualBlur from "../components/GradualBlur.jsx";
       <img src="/img/collage/money.png" alt="" />
       PLACE ORDER
     </a>
+    <a id="order-wa" href="#" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      ORDER ON WHATSAPP
+    </a>
   </div>
 </div>
 <div id="order-backdrop"></div>
@@ -44,6 +48,40 @@ import GradualBlur from "../components/GradualBlur.jsx";
   <img id="order-confirm-martini" src="/img/collage/martini.png" alt="martini" />
   <p id="order-confirm-text">Take a martini.<br>Your order is on the way,<br><strong>girllll.</strong></p>
   <p id="order-confirm-ig">Step into our world on Instagram<br><a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener"><strong>@gr1world</strong></a></p>
+</div>
+
+<!-- SIZE SELECTOR MODAL -->
+<div id="size-modal">
+  <div id="size-modal-inner">
+    <p id="size-modal-title">SELECT YOUR SIZE</p>
+    <div id="size-options">
+      <button class="size-btn" data-size="XS">XS</button>
+      <button class="size-btn" data-size="S">S</button>
+      <button class="size-btn" data-size="M">M</button>
+      <button class="size-btn" data-size="L">L</button>
+      <button class="size-btn" data-size="XL">XL</button>
+    </div>
+    <button id="size-modal-cancel">CANCEL</button>
+  </div>
+</div>
+
+<!-- SIZE GUIDE MODAL -->
+<div id="size-guide-modal">
+  <div id="size-guide-inner">
+    <button id="size-guide-close">✕</button>
+    <h3 id="size-guide-title">SIZE GUIDE</h3>
+    <table id="size-guide-table">
+      <thead><tr><th>SIZE</th><th>BUST</th><th>WAIST</th><th>HIPS</th></tr></thead>
+      <tbody>
+        <tr><td>XS</td><td>80–84</td><td>60–64</td><td>86–90</td></tr>
+        <tr><td>S</td><td>84–88</td><td>64–68</td><td>90–94</td></tr>
+        <tr><td>M</td><td>88–92</td><td>68–72</td><td>94–98</td></tr>
+        <tr><td>L</td><td>92–96</td><td>72–76</td><td>98–102</td></tr>
+        <tr><td>XL</td><td>96–100</td><td>76–80</td><td>102–106</td></tr>
+      </tbody>
+    </table>
+    <p id="size-guide-note">Measurements in cm. When between sizes, size up.</p>
+  </div>
 </div>
 
 <main>
@@ -83,14 +121,23 @@ import GradualBlur from "../components/GradualBlur.jsx";
     </div>
   </div>
 
+  <!-- ── CATEGORY FILTER ── -->
+  <div id="cat-filter">
+    <button class="cat-btn active" data-cat="all">ALL</button>
+    <button class="cat-btn" data-cat="BIKINIS">BIKINIS</button>
+    <button class="cat-btn" data-cat="GYM SET">GYM SET</button>
+    <button class="cat-btn" data-cat="STRIPE SET">STRIPE SET</button>
+  </div>
+
   <!-- ── COLLECTION ── -->
   <section class="collection" id="collection">
 
     <!-- ══ BIKINIS ══ -->
-    <div class="group-label">
+    <div class="group-label" data-cat-section="BIKINIS">
       <span class="group-num">01</span>
       <span class="group-name">BIKINIS</span>
       <span class="group-price">3,490 RSD</span>
+      <button class="size-guide-btn" data-cat="BIKINIS">SIZE GUIDE</button>
     </div>
 
     <div class="editorial-row">
@@ -143,11 +190,22 @@ import GradualBlur from "../components/GradualBlur.jsx";
       </a>
     </div>
 
+    <!-- ══ LOOKBOOK 01 — BIKINIS ══ -->
+    <div class="lookbook-section">
+      <div class="lookbook-img" style="background-image:url('/img/shop/p25.jpg')"></div>
+      <div class="lookbook-text">
+        <span class="lookbook-label">LOOKBOOK 01</span>
+        <h2 class="lookbook-title">BORN<br>FOR<br>THE SEA</h2>
+        <p class="lookbook-sub">Bikinis — GRL WORLD</p>
+      </div>
+    </div>
+
     <!-- ══ GYM SET ══ -->
-    <div class="group-label">
+    <div class="group-label" data-cat-section="GYM SET">
       <span class="group-num">02</span>
       <span class="group-name">GYM SET</span>
       <span class="group-price">5,990 RSD</span>
+      <button class="size-guide-btn" data-cat="GYM SET">SIZE GUIDE</button>
     </div>
 
     <div class="editorial-row editorial-row--reverse">
@@ -221,11 +279,22 @@ import GradualBlur from "../components/GradualBlur.jsx";
       </a>
     </div>
 
+    <!-- ══ LOOKBOOK 02 — GYM SET ══ -->
+    <div class="lookbook-section">
+      <div class="lookbook-img" style="background-image:url('/img/shop/p14.jpg')"></div>
+      <div class="lookbook-text">
+        <span class="lookbook-label">LOOKBOOK 02</span>
+        <h2 class="lookbook-title">MADE FOR<br>THE WILD<br>ONES</h2>
+        <p class="lookbook-sub">Gym Set — GRL WORLD</p>
+      </div>
+    </div>
+
     <!-- ══ STRIPE SET ══ -->
-    <div class="group-label">
+    <div class="group-label" data-cat-section="STRIPE SET">
       <span class="group-num">03</span>
       <span class="group-name">STRIPE SET</span>
       <span class="group-price">3,990 RSD</span>
+      <button class="size-guide-btn" data-cat="STRIPE SET">SIZE GUIDE</button>
     </div>
 
     <div class="editorial-row">
@@ -256,7 +325,39 @@ import GradualBlur from "../components/GradualBlur.jsx";
       ))}
     </div>
 
+    <!-- ══ LOOKBOOK 03 — STRIPE SET ══ -->
+    <div class="lookbook-section">
+      <div class="lookbook-img" style="background-image:url('/img/shop/p20.jpg')"></div>
+      <div class="lookbook-text">
+        <span class="lookbook-label">LOOKBOOK 03</span>
+        <h2 class="lookbook-title">STRIPE.<br>SLAY.<br>REPEAT.</h2>
+        <p class="lookbook-sub">Stripe Set — GRL WORLD</p>
+      </div>
+    </div>
 
+  </section>
+
+  <!-- ── REVIEWS ── -->
+  <section class="reviews-section">
+    <p class="reviews-label">WHAT THEY SAY</p>
+    <div class="reviews-track">
+      <div class="review-card">
+        <p class="review-text">"Literally obsessed. The quality is insane and it fits perfectly — wore it in Mykonos and got so many compliments."</p>
+        <span class="review-author">— @milicavukov</span>
+      </div>
+      <div class="review-card">
+        <p class="review-text">"The gym set is everything. Ordered a M and it's chef's kiss. Already ordered the stripe set too girllll 🤍"</p>
+        <span class="review-author">— @sarajovic__</span>
+      </div>
+      <div class="review-card">
+        <p class="review-text">"Super fast delivery and the packaging was so cute. The bikini looks exactly like in the pics. GRL WORLD forever 💅"</p>
+        <span class="review-author">— @anastasija.m</span>
+      </div>
+      <div class="review-card">
+        <p class="review-text">"I've bought the stripe set and the gym set. Both are stunning. The material feels premium and holds everything in place."</p>
+        <span class="review-author">— @nikoleta.bel</span>
+      </div>
+    </div>
   </section>
 
   <!-- ── MISSION ── -->
@@ -358,16 +459,25 @@ import GradualBlur from "../components/GradualBlur.jsx";
         if (idx >= 0) {
           orderItems.splice(idx, 1);
           card.classList.remove("card-selected");
+          updateBadge();
         } else {
           const img = card.querySelector("img") as HTMLImageElement;
           const price = cardPrices.get(card) || "";
-          orderItems.push({ name, price, src: img?.src || "", card });
-          card.classList.add("card-selected");
-          gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.35, ease: "back.out(3)" });
-          if (img) flyToCart(img, slayBtn2);
-          addRipple(card);
+          const doAdd = (size?: string) => {
+            const itemName = size ? `${name} — ${size}` : name;
+            orderItems.push({ name: itemName, price, src: img?.src || "", card });
+            card.classList.add("card-selected");
+            gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.35, ease: "back.out(3)" });
+            if (img) flyToCart(img, slayBtn2);
+            addRipple(card);
+            updateBadge();
+          };
+          if ((window as any).__grlRequestSize) {
+            (window as any).__grlRequestSize(doAdd);
+          } else {
+            doAdd();
+          }
         }
-        updateBadge();
       });
     });
 
@@ -437,6 +547,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
         gsap.to(slayBadge, { autoAlpha: 0, scale: 0, duration: 0.2 });
       }
       updateTotal();
+      (window as any).__grlUpdateWhatsApp?.();
     }
 
     function renderPanel() {
@@ -578,27 +689,216 @@ import GradualBlur from "../components/GradualBlur.jsx";
       }, 10000);
     });
 
-    (window as any).__grlToggle = (card: Element) => {
+    (window as any).__grlToggle = (card: Element, afterToggle?: () => void) => {
       const name = cardNames.get(card) || "ITEM";
       const price = cardPrices.get(card) || "";
       const productImg = Array.from(card.querySelectorAll<HTMLImageElement>("img"))
         .find(img => !img.closest(".card-add"));
       const src = productImg?.src || "";
       const idx = orderItems.findIndex(i => i.card === card);
+      const btn = card.querySelector<HTMLButtonElement>(".card-add");
       if (idx >= 0) {
         orderItems.splice(idx, 1);
         card.classList.remove("card-selected");
+        if (btn) gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.3, ease: "back.out(3)" });
+        updateBadge();
+        afterToggle?.();
       } else {
-        orderItems.push({ name, price, src, card });
-        card.classList.add("card-selected");
-        if (productImg) flyToCart(productImg, slayBtn2);
-        addRipple(card as HTMLElement);
+        const doAdd = (size?: string) => {
+          const itemName = size ? `${name} — ${size}` : name;
+          orderItems.push({ name: itemName, price, src, card });
+          card.classList.add("card-selected");
+          if (productImg) flyToCart(productImg, slayBtn2);
+          addRipple(card as HTMLElement);
+          if (btn) gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.3, ease: "back.out(3)" });
+          updateBadge();
+          afterToggle?.();
+        };
+        if ((window as any).__grlRequestSize) {
+          (window as any).__grlRequestSize(doAdd);
+        } else {
+          doAdd();
+        }
       }
-      const btn = card.querySelector<HTMLButtonElement>(".card-add");
-      if (btn) gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.3, ease: "back.out(3)" });
-      updateBadge();
     };
     (window as any).__grlIsAdded = (card: Element) => orderItems.some(i => i.card === card);
+    (window as any).__grlOrderItems = () => orderItems.map(i => ({ name: i.name, price: i.price }));
+  }
+
+  /* ─── SIZE SELECTOR MODAL ─── */
+  {
+    const sizeModal = document.getElementById("size-modal")!;
+    const sizeModalInner = document.getElementById("size-modal-inner")!;
+    const sizeModalCancel = document.getElementById("size-modal-cancel")!;
+    const sizeBtns = document.querySelectorAll<HTMLButtonElement>(".size-btn");
+
+    let pendingCallback: ((size?: string) => void) | null = null;
+
+    function showSizeModal(onSelect: (size?: string) => void) {
+      pendingCallback = onSelect;
+      sizeModal.style.display = "flex";
+      gsap.fromTo(sizeModalInner,
+        { scale: 0.8, autoAlpha: 0 },
+        { scale: 1, autoAlpha: 1, duration: 0.35, ease: "back.out(2)" }
+      );
+    }
+
+    function hideSizeModal() {
+      gsap.to(sizeModalInner, {
+        scale: 0.88, autoAlpha: 0, duration: 0.22, ease: "power2.in",
+        onComplete: () => { sizeModal.style.display = "none"; }
+      });
+      pendingCallback = null;
+    }
+
+    sizeBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const size = btn.dataset.size!;
+        const cb = pendingCallback;
+        hideSizeModal();
+        cb?.(size);
+      });
+    });
+
+    sizeModalCancel.addEventListener("click", hideSizeModal);
+    sizeModal.addEventListener("click", (e) => { if (e.target === sizeModal) hideSizeModal(); });
+
+    (window as any).__grlRequestSize = (onSelect: (size?: string) => void) => {
+      showSizeModal(onSelect);
+    };
+  }
+
+  /* ─── SIZE GUIDE MODAL ─── */
+  {
+    const guideModal = document.getElementById("size-guide-modal")!;
+    const guideInner = document.getElementById("size-guide-inner")!;
+    const guideClose = document.getElementById("size-guide-close")!;
+
+    function openGuide() {
+      guideModal.style.display = "flex";
+      gsap.fromTo(guideInner,
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.35, ease: "power3.out" }
+      );
+    }
+
+    function closeGuide() {
+      gsap.to(guideInner, {
+        y: 20, autoAlpha: 0, duration: 0.25, ease: "power2.in",
+        onComplete: () => { guideModal.style.display = "none"; }
+      });
+    }
+
+    guideClose.addEventListener("click", closeGuide);
+    guideModal.addEventListener("click", (e) => { if (e.target === guideModal) closeGuide(); });
+
+    document.querySelectorAll<HTMLButtonElement>(".size-guide-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openGuide();
+      });
+    });
+  }
+
+  /* ─── CATEGORY FILTER ─── */
+  {
+    const catBtns = document.querySelectorAll<HTMLButtonElement>(".cat-btn");
+
+    catBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        catBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const cat = btn.dataset.cat!;
+        if (cat === "all") {
+          document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+        const target = document.querySelector<HTMLElement>(`.group-label[data-cat-section="${cat}"]`);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top, behavior: "smooth" });
+        }
+      });
+    });
+  }
+
+  /* ─── WHATSAPP URL BUILDER ─── */
+  {
+    const orderWa = document.getElementById("order-wa") as HTMLAnchorElement | null;
+    if (orderWa) {
+      (window as any).__grlUpdateWhatsApp = () => {
+        const items: { name: string; price: string }[] = (window as any).__grlOrderItems?.() || [];
+        if (items.length === 0) {
+          orderWa.href = "https://wa.me/";
+          return;
+        }
+        const lines = items.map(i => `• ${i.name}${i.price ? ` (${i.price})` : ""}`).join("\n");
+        const total = items.reduce((s, i) => s + (parseInt(i.price.replace(/[^0-9]/g, ""), 10) || 0), 0);
+        const text = `Hello GRL WORLD! 👋\n\nI'd like to order:\n${lines}\n\nTOTAL: ${total.toLocaleString("sr-RS")} RSD`;
+        orderWa.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      };
+    }
+  }
+
+  /* ─── STOCK BADGES + WORN BY + SHARE + MATERIAL ─── */
+  {
+    const stockMap: Record<string, string> = {
+      "p5.jpg": "LAST 2",
+      "p14.jpg": "LAST 3",
+      "p20.jpg": "LAST 2",
+      "p26.jpg": "LAST 1",
+      "gym1.jpg": "SOLD OUT",
+    };
+    const wornByMap: Record<string, string> = {
+      "p7.jpg": "@marinajov",
+      "p8.jpg": "@teabosnjak",
+      "p22.jpg": "@anajelic_",
+      "p15.jpg": "@nikoletab",
+    };
+
+    document.querySelectorAll<HTMLElement>(".card").forEach(card => {
+      const img = card.querySelector<HTMLImageElement>("img:not(.card-add img)");
+      if (!img) return;
+      const filename = img.src.split("/").pop() || "";
+
+      // Stock badge
+      const stockLabel = stockMap[filename];
+      if (stockLabel) {
+        const badge = document.createElement("span");
+        badge.className = `stock-badge stock-badge--${stockLabel.startsWith("SOLD") ? "sold" : "last"}`;
+        badge.textContent = stockLabel;
+        card.appendChild(badge);
+      }
+
+      // "As worn by" tag
+      const wornBy = wornByMap[filename];
+      if (wornBy) {
+        const tag = document.createElement("span");
+        tag.className = "worn-by";
+        tag.textContent = `as worn by ${wornBy}`;
+        card.appendChild(tag);
+      }
+
+      // Share button
+      const shareBtn = document.createElement("button");
+      shareBtn.className = "card-share";
+      shareBtn.setAttribute("aria-label", "Share");
+      shareBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`;
+      shareBtn.addEventListener("click", async (e) => {
+        e.preventDefault(); e.stopPropagation();
+        const url = window.location.href;
+        const title = img.alt || "GRL WORLD Look";
+        if (navigator.share) {
+          try { await navigator.share({ title, url }); } catch {}
+        } else {
+          await navigator.clipboard.writeText(url).catch(() => {});
+          shareBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8d5a2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+          setTimeout(() => { shareBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`; }, 2000);
+        }
+      });
+      card.appendChild(shareBtn);
+
+    });
   }
 
   mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -726,6 +1026,39 @@ import GradualBlur from "../components/GradualBlur.jsx";
       scrollTrigger: { trigger: ".cta-block", start: "top 88%" },
     });
 
+    /* ─── LOOKBOOK PARALLAX ─── */
+    document.querySelectorAll<HTMLElement>(".lookbook-section").forEach(section => {
+      const img = section.querySelector<HTMLElement>(".lookbook-img");
+      const label = section.querySelector<HTMLElement>(".lookbook-label");
+      const title = section.querySelector<HTMLElement>(".lookbook-title");
+      const sub = section.querySelector<HTMLElement>(".lookbook-sub");
+      if (img) {
+        gsap.fromTo(img, { scale: 1.12 }, {
+          scale: 1, ease: "none",
+          scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true },
+        });
+      }
+      if (label) gsap.from(label, { y: 30, autoAlpha: 0, duration: 0.8, scrollTrigger: { trigger: section, start: "top 75%" } });
+      if (title) gsap.from(title, { y: 50, autoAlpha: 0, duration: 1.1, delay: 0.15, ease: "power3.out", scrollTrigger: { trigger: section, start: "top 75%" } });
+      if (sub) gsap.from(sub, { y: 20, autoAlpha: 0, duration: 0.7, delay: 0.4, scrollTrigger: { trigger: section, start: "top 75%" } });
+    });
+
+    /* ─── REVIEWS ─── */
+    gsap.from(".reviews-label", {
+      y: 20, autoAlpha: 0, duration: 0.8,
+      scrollTrigger: { trigger: ".reviews-section", start: "top 88%" },
+    });
+    gsap.from(".review-card", {
+      y: 30, autoAlpha: 0, stagger: 0.12, duration: 0.7, ease: "power2.out",
+      scrollTrigger: { trigger: ".reviews-track", start: "top 90%" },
+    });
+
+    /* ─── CAT FILTER ─── */
+    gsap.from(".cat-btn", {
+      y: 15, autoAlpha: 0, stagger: 0.08, duration: 0.5, ease: "power2.out",
+      scrollTrigger: { trigger: "#cat-filter", start: "top 92%" },
+    });
+
     /* ─── BACK LINK EXIT ─── */
     const backLink = document.querySelector(".back-link") as HTMLAnchorElement | null;
     if (backLink) {
@@ -849,10 +1182,11 @@ import GradualBlur from "../components/GradualBlur.jsx";
       e.stopPropagation();
       const card = currentGroup.cards[currentIdx];
       if (card && (window as any).__grlToggle) {
-        (window as any).__grlToggle(card);
-        const added = !!((window as any).__grlIsAdded?.(card));
-        lbSlay.classList.toggle("lb-slay-added", added);
-        lbSlayLabel.textContent = added ? "ORDERED ✓" : "ADD TO ORDER";
+        (window as any).__grlToggle(card, () => {
+          const added = !!((window as any).__grlIsAdded?.(card));
+          lbSlay.classList.toggle("lb-slay-added", added);
+          lbSlayLabel.textContent = added ? "ORDERED ✓" : "ADD TO ORDER";
+        });
         gsap.fromTo(lbSlay, { scale: 0.8 }, { scale: 1, duration: 0.4, ease: "back.out(3)" });
       }
     });
@@ -1501,4 +1835,220 @@ import GradualBlur from "../components/GradualBlur.jsx";
     position: fixed; inset: 0; background: #f6aad9;
     z-index: 9999; transform-origin: top; will-change: transform;
   }
+
+  /* ── SIZE SELECTOR MODAL ── */
+  #size-modal {
+    display: none; position: fixed; inset: 0; z-index: 10500;
+    background: rgba(0,0,0,0.78); align-items: center; justify-content: center;
+  }
+  #size-modal-inner {
+    background: #1c181b; border-radius: 10px; padding: 2.5rem 2.8rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1.8rem;
+    visibility: hidden; opacity: 0;
+    border: 1px solid rgba(246,170,217,0.15);
+  }
+  #size-modal-title {
+    font-family: "TAN-NIMBUS", sans-serif; color: #f6aad9;
+    font-size: 0.82rem; letter-spacing: 0.35em; margin: 0;
+  }
+  #size-options { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .size-btn {
+    font-family: "TAN-NIMBUS", sans-serif;
+    background: transparent; border: 1.5px solid rgba(246,170,217,0.35);
+    color: rgba(255,255,255,0.8); cursor: pointer; border-radius: 4px;
+    padding: 0.7rem 1rem; font-size: 0.72rem; letter-spacing: 0.15em;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+    min-width: 52px; text-align: center;
+  }
+  .size-btn:hover {
+    background: #f6aad9; border-color: #f6aad9; color: #1c181b;
+    transform: translateY(-2px);
+  }
+  .size-btn:active { transform: translateY(0); }
+  #size-modal-cancel {
+    font-family: "TAN-NIMBUS", sans-serif; background: none; border: none;
+    color: rgba(255,255,255,0.3); cursor: pointer; font-size: 0.6rem;
+    letter-spacing: 0.25em; transition: color 0.2s; padding: 0;
+  }
+  #size-modal-cancel:hover { color: rgba(255,255,255,0.65); }
+
+  /* ── SIZE GUIDE MODAL ── */
+  #size-guide-modal {
+    display: none; position: fixed; inset: 0; z-index: 10600;
+    background: rgba(0,0,0,0.82); align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  #size-guide-inner {
+    background: #1c181b; border-radius: 10px; padding: 2.5rem 2.8rem;
+    position: relative; min-width: 320px; max-width: 94vw;
+    visibility: hidden; opacity: 0;
+    border: 1px solid rgba(246,170,217,0.15);
+  }
+  #size-guide-close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    background: none; border: none; color: rgba(255,255,255,0.4);
+    font-size: 1.1rem; cursor: pointer; transition: color 0.2s; padding: 0.3rem;
+  }
+  #size-guide-close:hover { color: #f6aad9; }
+  #size-guide-title {
+    font-family: "TAN-NIMBUS", sans-serif; color: #f6aad9;
+    font-size: 0.9rem; letter-spacing: 0.3em; margin: 0 0 1.8rem; text-align: center;
+  }
+  #size-guide-table { width: 100%; border-collapse: collapse; }
+  #size-guide-table th, #size-guide-table td {
+    font-family: "TAN-NIMBUS", sans-serif; text-align: center;
+    padding: 0.65rem 1.2rem; font-size: 0.68rem; letter-spacing: 0.12em;
+  }
+  #size-guide-table th {
+    color: rgba(246,170,217,0.7);
+    border-bottom: 1px solid rgba(246,170,217,0.2);
+  }
+  #size-guide-table td { color: rgba(255,255,255,0.78); }
+  #size-guide-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  #size-guide-note {
+    font-family: "TAN-NIMBUS", sans-serif; color: rgba(255,255,255,0.35);
+    font-size: 0.58rem; letter-spacing: 0.15em; margin: 1.5rem 0 0;
+    text-align: center;
+  }
+  .size-guide-btn {
+    font-family: "TAN-NIMBUS", sans-serif; background: transparent;
+    border: 1px solid rgba(70,100,65,0.5); color: #466441;
+    cursor: pointer; font-size: 0.55rem; letter-spacing: 0.2em;
+    padding: 0.28rem 0.75rem; border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+    align-self: center;
+  }
+  .size-guide-btn:hover { background: #466441; color: #fcd8da; }
+
+  /* ── CATEGORY FILTER ── */
+  #cat-filter {
+    display: flex; gap: 0.6rem; padding: 1.2rem 1.5rem;
+    max-width: 1300px; margin: 0 auto;
+    flex-wrap: wrap;
+  }
+  .cat-btn {
+    font-family: "TAN-NIMBUS", sans-serif; background: transparent;
+    border: 1.5px solid rgba(70,100,65,0.4); color: #466441;
+    cursor: pointer; border-radius: 999px; padding: 0.45rem 1.2rem;
+    font-size: 0.6rem; letter-spacing: 0.22em;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+  .cat-btn.active, .cat-btn:hover {
+    background: #466441; color: #fcd8da; border-color: #466441;
+  }
+
+  /* ── WHATSAPP BUTTON ── */
+  #order-wa {
+    display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+    font-family: "TAN-NIMBUS", sans-serif; text-decoration: none;
+    color: #fff; background: #25D366; border-radius: 2px;
+    padding: 13px 20px; font-size: 0.68rem; letter-spacing: 0.2em;
+    transition: background 0.25s, transform 0.15s;
+  }
+  #order-wa:hover { background: #1ebe5c; transform: translateY(-1px); }
+  #order-wa svg { flex-shrink: 0; }
+
+  /* ── LOOKBOOK SECTION ── */
+  .lookbook-section {
+    position: relative; height: 75vh; min-height: 460px;
+    overflow: hidden; border-radius: 4px; margin: 1rem 0;
+  }
+  .lookbook-img {
+    position: absolute; inset: -10%;
+    background-size: cover; background-position: center;
+    filter: brightness(0.48);
+    transform-origin: center;
+  }
+  .lookbook-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 8%;
+    pointer-events: none;
+  }
+  .lookbook-label {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #f6aad9; font-size: 0.6rem; letter-spacing: 0.55em;
+    display: block; margin-bottom: 1.5rem;
+  }
+  .lookbook-title {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    color: #fff; line-height: 1.05; margin: 0;
+    letter-spacing: 0.03em;
+  }
+  .lookbook-sub {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.45); font-size: 0.65rem;
+    letter-spacing: 0.35em; margin: 1.5rem 0 0;
+  }
+  @media (max-width: 700px) {
+    .lookbook-section { height: 55vh; min-height: 340px; }
+    .lookbook-text { padding: 0 6%; }
+  }
+
+  /* ── REVIEWS SECTION ── */
+  .reviews-section {
+    background: #1c181b; padding: 4.5rem 1.5rem 5rem;
+    overflow: hidden;
+  }
+  .reviews-label {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(246,170,217,0.45); font-size: 0.6rem;
+    letter-spacing: 0.5em; text-align: center; margin: 0 0 2.8rem;
+  }
+  .reviews-track {
+    display: flex; gap: 1.2rem; overflow-x: auto;
+    scroll-snap-type: x mandatory; padding-bottom: 0.5rem;
+    scrollbar-width: none; max-width: 1300px; margin: 0 auto;
+  }
+  .reviews-track::-webkit-scrollbar { display: none; }
+  .review-card {
+    flex-shrink: 0; width: 290px;
+    background: rgba(255,255,255,0.04); border-radius: 8px;
+    padding: 1.8rem; scroll-snap-align: start;
+    border: 1px solid rgba(246,170,217,0.09);
+  }
+  .review-text {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.8); font-size: 0.68rem;
+    line-height: 1.95; letter-spacing: 0.07em; margin: 0 0 1.2rem;
+  }
+  .review-author {
+    display: block; font-family: "TAN-NIMBUS", sans-serif;
+    color: #f6aad9; font-size: 0.58rem; letter-spacing: 0.2em;
+    margin-bottom: 0.6rem;
+  }
+
+  /* ── STOCK BADGE ── */
+  .stock-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 10;
+    font-family: "TAN-NIMBUS", sans-serif; font-size: 0.5rem;
+    letter-spacing: 0.22em; padding: 4px 10px; border-radius: 2px;
+    pointer-events: none;
+  }
+  .stock-badge--last { background: #f6aad9; color: #1c181b; }
+  .stock-badge--sold { background: rgba(28,24,27,0.85); color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.15); }
+
+  /* ── AS WORN BY ── */
+  .worn-by {
+    position: absolute; bottom: 56px; left: 10px; z-index: 10;
+    background: rgba(28,24,27,0.75); border-radius: 999px;
+    padding: 4px 12px; pointer-events: none;
+    font-family: "TAN-NIMBUS", sans-serif; font-size: 0.48rem;
+    color: #f6aad9; letter-spacing: 0.12em; white-space: nowrap;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── SHARE BUTTON ── */
+  .card-share {
+    position: absolute; top: 8px; right: 72px; z-index: 12;
+    background: rgba(28,24,27,0.65); border: none; border-radius: 50%;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #fff;
+    opacity: 0; transition: opacity 0.2s, background 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .card:hover .card-share { opacity: 1; }
+  .card-share:hover { background: rgba(246,170,217,0.85); color: #1c181b; }
+
 </style>
