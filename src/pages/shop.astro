@@ -112,7 +112,23 @@ import GradualBlur from "../components/GradualBlur.jsx";
     />
   </section>
 
-  <!-- ── MARQUEE ── -->
+  <!-- ── PINK BG AREA (clouds only here) ── -->
+  <div class="pink-bg-area">
+  <div class="cloud-layer" aria-hidden="true">
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="88"  data-y="8"   data-scale="1.0"  data-op="0.38" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="62"  data-y="35"  data-scale="0.65" data-op="0.28" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="105" data-y="78"  data-scale="1.2"  data-op="0.42" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="74"  data-y="52"  data-scale="0.80" data-op="0.30" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="50"  data-y="20"  data-scale="0.55" data-op="0.24" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="95"  data-y="65"  data-scale="1.1"  data-op="0.36" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="68"  data-y="42"  data-scale="0.70" data-op="0.29" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="115" data-y="88"  data-scale="1.35" data-op="0.44" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="80"  data-y="15"  data-scale="0.90" data-op="0.33" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="57"  data-y="58"  data-scale="0.60" data-op="0.25" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="100" data-y="30"  data-scale="1.15" data-op="0.39" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="72"  data-y="70"  data-scale="0.75" data-op="0.30" />
+    <img src="/img/cloud.svg" alt="" class="cl" data-speed="120" data-y="92"  data-scale="1.4"  data-op="0.45" />
+  </div>
   <div class="marquee-wrap">
     <div class="marquee-track">
       {Array.from({ length: 8 }, () => (
@@ -337,25 +353,46 @@ import GradualBlur from "../components/GradualBlur.jsx";
 
   </section>
 
+  </div><!-- /pink-bg-area -->
+
   <!-- ── REVIEWS ── -->
   <section class="reviews-section">
-    <p class="reviews-label">WHAT THEY SAY</p>
+    <div class="reviews-header">
+      <span class="reviews-eyebrow">TESTIMONIALS</span>
+      <h2 class="reviews-label">HEAR IT FROM<br>THE GIRLS</h2>
+    </div>
     <div class="reviews-track">
       <div class="review-card">
-        <p class="review-text">"Literally obsessed. The quality is insane and it fits perfectly — wore it in Mykonos and got so many compliments."</p>
-        <span class="review-author">— @milicavukov</span>
+        <span class="review-quote">"</span>
+        <p class="review-text">Literally obsessed. The quality is insane and it fits perfectly — wore it in Mykonos and got so many compliments.</p>
+        <div class="review-footer">
+          <span class="review-avatar">M</span>
+          <span class="review-author">@milicavukov</span>
+        </div>
       </div>
       <div class="review-card">
-        <p class="review-text">"The gym set is everything. Ordered a M and it's chef's kiss. Already ordered the stripe set too girllll 🤍"</p>
-        <span class="review-author">— @sarajovic__</span>
+        <span class="review-quote">"</span>
+        <p class="review-text">The gym set is everything. Ordered a M and it's chef's kiss. Already ordered the stripe set too girllll 🤍</p>
+        <div class="review-footer">
+          <span class="review-avatar">S</span>
+          <span class="review-author">@sarajovic__</span>
+        </div>
       </div>
       <div class="review-card">
-        <p class="review-text">"Super fast delivery and the packaging was so cute. The bikini looks exactly like in the pics. GRL WORLD forever 💅"</p>
-        <span class="review-author">— @anastasija.m</span>
+        <span class="review-quote">"</span>
+        <p class="review-text">Super fast delivery and the packaging was so cute. The bikini looks exactly like in the pics. GRL WORLD forever 💅</p>
+        <div class="review-footer">
+          <span class="review-avatar">A</span>
+          <span class="review-author">@anastasija.m</span>
+        </div>
       </div>
       <div class="review-card">
-        <p class="review-text">"I've bought the stripe set and the gym set. Both are stunning. The material feels premium and holds everything in place."</p>
-        <span class="review-author">— @nikoleta.bel</span>
+        <span class="review-quote">"</span>
+        <p class="review-text">I've bought the stripe set and the gym set. Both are stunning. The material feels premium and holds everything in place.</p>
+        <div class="review-footer">
+          <span class="review-avatar">N</span>
+          <span class="review-author">@nikoleta.bel</span>
+        </div>
       </div>
     </div>
   </section>
@@ -938,6 +975,23 @@ import GradualBlur from "../components/GradualBlur.jsx";
       });
     }
 
+    /* ─── CLOUDS ─── */
+    {
+      const W = window.innerWidth;
+      const clouds = document.querySelectorAll<HTMLElement>(".cloud-layer .cl");
+      const n = clouds.length;
+      const yDrifts = [14,-11,18,-9,12,-16,10,-13,15,-8,20,-12,16];
+      clouds.forEach((el, i) => {
+        const speed   = parseFloat(el.dataset.speed || "80");
+        const yPct    = parseFloat(el.dataset.y     || "50");
+        const scale   = parseFloat(el.dataset.scale || "1");
+        const opacity = parseFloat(el.dataset.op    || "0.35");
+        gsap.set(el, { top: `${yPct}%`, scale, opacity, x: -320 });
+        gsap.to(el, { x: W + 320, duration: speed, repeat: -1, ease: "none", delay: -(speed * i / n) });
+        gsap.to(el, { y: yDrifts[i % yDrifts.length], duration: speed / 9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      });
+    }
+
     /* ─── ENTRY CURTAIN ─── */
     gsap.to(entryCurtain, {
       scaleY: 0,
@@ -1044,13 +1098,17 @@ import GradualBlur from "../components/GradualBlur.jsx";
     });
 
     /* ─── REVIEWS ─── */
+    gsap.from(".reviews-eyebrow", {
+      y: 15, autoAlpha: 0, duration: 0.6,
+      scrollTrigger: { trigger: ".reviews-section", start: "top 85%" },
+    });
     gsap.from(".reviews-label", {
-      y: 20, autoAlpha: 0, duration: 0.8,
-      scrollTrigger: { trigger: ".reviews-section", start: "top 88%" },
+      y: 30, autoAlpha: 0, duration: 0.9, delay: 0.1, ease: "power3.out",
+      scrollTrigger: { trigger: ".reviews-section", start: "top 85%" },
     });
     gsap.from(".review-card", {
-      y: 30, autoAlpha: 0, stagger: 0.12, duration: 0.7, ease: "power2.out",
-      scrollTrigger: { trigger: ".reviews-track", start: "top 90%" },
+      y: 40, autoAlpha: 0, stagger: 0.1, duration: 0.7, ease: "power2.out",
+      scrollTrigger: { trigger: ".reviews-track", start: "top 88%" },
     });
 
     /* ─── CAT FILTER ─── */
@@ -1328,7 +1386,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
   #order-confirm-text strong { color: #f6aad9; font-size: 1.3em; }
   #order-confirm-ig {
     font-family: "TAN-NIMBUS", sans-serif;
-    color: rgba(255,255,255,0.5); font-size: 0.7rem;
+    color: rgba(255,255,255,0.85); font-size: 0.85rem;
     letter-spacing: 0.2em; text-align: center; line-height: 1.8; margin: 0;
   }
   #order-confirm-ig a { text-decoration: none; }
@@ -1798,9 +1856,9 @@ import GradualBlur from "../components/GradualBlur.jsx";
   }
   .cta-label {
     font-family: "TAN-NIMBUS", sans-serif;
-    color: rgba(246,170,217,0.65);
-    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
-    letter-spacing: 0.5em;
+    color: #f6aad9;
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    letter-spacing: 0.4em;
     margin: 0;
   }
   .cta-btn {
@@ -1829,6 +1887,23 @@ import GradualBlur from "../components/GradualBlur.jsx";
     .mission-title { position: static; }
   }
 
+
+  /* ── CLOUDS ── */
+  .pink-bg-area {
+    position: relative;
+    overflow: hidden;
+  }
+  .cloud-layer {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .cloud-layer .cl {
+    position: absolute; left: 0; width: 320px;
+  }
+  @media (max-width: 767px) {
+    .cloud-layer .cl { width: 180px; }
+  }
 
   /* ── CURTAIN ── */
   #entry-curtain {
@@ -1988,35 +2063,99 @@ import GradualBlur from "../components/GradualBlur.jsx";
 
   /* ── REVIEWS SECTION ── */
   .reviews-section {
-    background: #1c181b; padding: 4.5rem 1.5rem 5rem;
+    background: #1c181b;
+    padding: 6rem 2rem 7rem;
     overflow: hidden;
+  }
+  .reviews-header {
+    max-width: 1300px; margin: 0 auto 4rem;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
+  }
+  .reviews-eyebrow {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #466441; font-size: 0.55rem;
+    letter-spacing: 0.55em; display: block;
   }
   .reviews-label {
     font-family: "TAN-NIMBUS", sans-serif;
-    color: rgba(246,170,217,0.45); font-size: 0.6rem;
-    letter-spacing: 0.5em; text-align: center; margin: 0 0 2.8rem;
+    color: #fff; font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1; letter-spacing: 0.04em; margin: 0;
   }
   .reviews-track {
-    display: flex; gap: 1.2rem; overflow-x: auto;
-    scroll-snap-type: x mandatory; padding-bottom: 0.5rem;
-    scrollbar-width: none; max-width: 1300px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 1300px; margin: 0 auto;
   }
-  .reviews-track::-webkit-scrollbar { display: none; }
   .review-card {
-    flex-shrink: 0; width: 290px;
-    background: rgba(255,255,255,0.04); border-radius: 8px;
-    padding: 1.8rem; scroll-snap-align: start;
-    border: 1px solid rgba(246,170,217,0.09);
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px; padding: 2.2rem 1.8rem 1.8rem;
+    border: 1px solid rgba(246,170,217,0.1);
+    display: flex; flex-direction: column; gap: 1.2rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .review-card:hover {
+    border-color: rgba(246,170,217,0.35);
+    background: rgba(255,255,255,0.07);
+  }
+  .review-quote {
+    font-family: Georgia, serif;
+    font-size: 4rem; line-height: 0.8;
+    color: #f6aad9; display: block;
+    user-select: none;
   }
   .review-text {
     font-family: "TAN-NIMBUS", sans-serif;
-    color: rgba(255,255,255,0.8); font-size: 0.68rem;
-    line-height: 1.95; letter-spacing: 0.07em; margin: 0 0 1.2rem;
+    color: rgba(255,255,255,0.82); font-size: 0.72rem;
+    line-height: 2; letter-spacing: 0.06em; margin: 0;
+    flex: 1;
+  }
+  .review-footer {
+    display: flex; align-items: center; gap: 0.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(246,170,217,0.12);
+  }
+  .review-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #f6aad9; color: #1c181b;
+    font-family: "TAN-NIMBUS", sans-serif; font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
   .review-author {
-    display: block; font-family: "TAN-NIMBUS", sans-serif;
-    color: #f6aad9; font-size: 0.58rem; letter-spacing: 0.2em;
-    margin-bottom: 0.6rem;
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.5); font-size: 0.58rem;
+    letter-spacing: 0.18em;
+  }
+  @media (max-width: 900px) {
+    .reviews-track {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .reviews-section { padding: 4rem 0 5rem; }
+    .reviews-header { padding: 0 1.5rem; align-items: flex-start; }
+    .reviews-track {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      gap: 0;
+      max-width: 100%;
+    }
+    .reviews-track::-webkit-scrollbar { display: none; }
+    .review-card {
+      flex-shrink: 0;
+      width: 100vw;
+      min-height: 60vh;
+      scroll-snap-align: center;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      padding: 2.5rem 1.8rem 2.5rem;
+      justify-content: center;
+    }
   }
 
   /* ── STOCK BADGE ── */
