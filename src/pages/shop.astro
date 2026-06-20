@@ -43,7 +43,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
 <div id="order-confirm">
   <img id="order-confirm-martini" src="/img/collage/martini.png" alt="martini" />
   <p id="order-confirm-text">Take a martini.<br>Your order is on the way,<br><strong>girllll.</strong></p>
-  <p id="order-confirm-ig">follow us on instagram<br><a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener"><strong>@gr1world</strong></a></p>
+  <p id="order-confirm-ig">Step into our world on Instagram<br><a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener"><strong>@gr1world</strong></a></p>
 </div>
 
 <main>
@@ -276,7 +276,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
     <!-- CTA inside mission block -->
     <div class="cta-block">
       <div class="cta-divider"></div>
-      <p class="cta-label">FOR ORDERS & ENQUIRIES</p>
+      <p class="cta-label">Step into our world on Instagram</p>
       <a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" class="cta-btn">
         @GR1WORLD
       </a>
@@ -545,11 +545,14 @@ import GradualBlur from "../components/GradualBlur.jsx";
     /* ─── SLAY ORDER BUTTON ANIMATIONS ─── */
     const slayBtn = document.getElementById("slay-btn") as HTMLAnchorElement | null;
     if (slayBtn) {
-      gsap.fromTo(slayBtn,
-        { scale: 0, autoAlpha: 0, rotation: 12 },
-        { scale: 1, autoAlpha: 1, rotation: 12, duration: 0.7, delay: 1.4, ease: "back.out(2.5)" }
-      );
-      gsap.to(slayBtn, { rotation: 6, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 2 });
+      gsap.set(slayBtn, { scale: 0, autoAlpha: 0, rotation: 12 });
+      gsap.to(slayBtn, { rotation: 6, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+      ScrollTrigger.create({
+        trigger: ".hero",
+        start: "bottom 80%",
+        onEnter: () => gsap.to(slayBtn, { scale: 1, autoAlpha: 1, rotation: 12, duration: 0.7, ease: "back.out(2.5)" }),
+        onLeaveBack: () => gsap.to(slayBtn, { scale: 0, autoAlpha: 0, duration: 0.3 }),
+      });
       slayBtn.addEventListener("mouseenter", () => gsap.to(slayBtn, { scale: 1.15, duration: 0.2, ease: "back.out(2)" }));
       slayBtn.addEventListener("mouseleave", () => gsap.to(slayBtn, { scale: 1, duration: 0.25, ease: "power2.inOut" }));
     }
@@ -560,10 +563,10 @@ import GradualBlur from "../components/GradualBlur.jsx";
       // float animation
       gsap.to(gummy, { y: -10, duration: 2.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-      // show after scrolling past hero
+      // show after 40% of page scrolled
       ScrollTrigger.create({
-        trigger: ".hero",
-        start: "bottom 80%",
+        trigger: document.body,
+        start: "40% top",
         onEnter: () => gsap.to(gummy, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }),
         onLeaveBack: () => gsap.to(gummy, { autoAlpha: 0, scale: 0.5, duration: 0.3 }),
       });
@@ -1095,6 +1098,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
   @media (max-width: 480px) {
     #slay-btn img { width: 70px; }
     #slay-btn { bottom: 1.5rem; left: 1.2rem; }
+    #gummy-btn { bottom: 1.5rem; right: 0.3rem; left: auto; width: 58px; }
   }
 
   /* ── HERO ── */
