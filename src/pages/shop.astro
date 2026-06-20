@@ -1,13 +1,50 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import GradualBlur from "../components/GradualBlur.jsx";
 ---
 
-<Layout title="SHOP — GRL WORLD" />
+<Layout
+  title="Shop — GRL WORLD | Bikinis, Gym Sets & Stripe Sets"
+  description="Shop GRL WORLD creative swimwear — bikinis, gym sets and stripe sets. Summer outfits for the beach. DM @gr1world to order."
+  image="/img/shop/p5.jpg"
+  url="https://grlworld.com/shop"
+/>
 
 <div id="entry-curtain"></div>
 
 <div class="stk-layer" aria-hidden="true"></div>
 <img id="gummy-btn" src="/img/collage/gummy-bear.png" />
+<a id="slay-btn" href="https://www.instagram.com/gr1world" target="_blank" rel="noopener" aria-label="Order now">
+  <img src="/img/collage/slay.png" alt="SLAY — Order Now" />
+  <span id="slay-badge">0</span>
+</a>
+
+<!-- ORDER PANEL -->
+<div id="order-panel">
+  <div id="order-header">
+    <h3>YOUR ORDER</h3>
+    <button id="order-close" aria-label="Close">✕</button>
+  </div>
+  <p id="order-hint">Click <strong>+</strong> on any look to add it</p>
+  <div id="order-items"></div>
+  <div id="order-footer">
+    <div id="order-total-row">
+      <span id="order-total-label">TOTAL</span>
+      <span id="order-total-value">0 RSD</span>
+    </div>
+    <a id="order-dm" href="https://www.instagram.com/gr1world" target="_blank" rel="noopener">
+      <img src="/img/collage/money.png" alt="" />
+      PLACE ORDER
+    </a>
+  </div>
+</div>
+<div id="order-backdrop"></div>
+
+<div id="order-confirm">
+  <img id="order-confirm-martini" src="/img/collage/martini.png" alt="martini" />
+  <p id="order-confirm-text">Take a martini.<br>Your order is on the way,<br><strong>girllll.</strong></p>
+  <p id="order-confirm-ig">follow us on instagram<br><a href="https://www.instagram.com/gr1world" target="_blank" rel="noopener"><strong>@gr1world</strong></a></p>
+</div>
 
 <main>
 
@@ -24,6 +61,17 @@ import Layout from "../layouts/Layout.astro";
     </div>
     <a href="/" class="back-link">← BACK</a>
     <a href="#collection" class="scroll-hint">SCROLL ↓</a>
+    <GradualBlur
+      client:load
+      target="parent"
+      position="bottom"
+      height="8rem"
+      strength={3}
+      divCount={8}
+      curve="bezier"
+      exponential={true}
+      opacity={1}
+    />
   </section>
 
   <!-- ── MARQUEE ── -->
@@ -42,6 +90,7 @@ import Layout from "../layouts/Layout.astro";
     <div class="group-label">
       <span class="group-num">01</span>
       <span class="group-name">BIKINIS</span>
+      <span class="group-price">3,490 RSD</span>
     </div>
 
     <div class="editorial-row">
@@ -98,6 +147,7 @@ import Layout from "../layouts/Layout.astro";
     <div class="group-label">
       <span class="group-num">02</span>
       <span class="group-name">GYM SET</span>
+      <span class="group-price">5,990 RSD</span>
     </div>
 
     <div class="editorial-row editorial-row--reverse">
@@ -175,6 +225,7 @@ import Layout from "../layouts/Layout.astro";
     <div class="group-label">
       <span class="group-num">03</span>
       <span class="group-name">STRIPE SET</span>
+      <span class="group-price">3,990 RSD</span>
     </div>
 
     <div class="editorial-row">
@@ -239,7 +290,13 @@ import Layout from "../layouts/Layout.astro";
 <div id="lb-overlay">
   <button id="lb-close">✕</button>
   <p id="lb-cat"></p>
-  <img id="lb-img" src="" alt="" />
+  <div id="lb-img-wrap">
+    <img id="lb-img" src="" alt="" />
+    <button id="lb-slay" aria-label="Add to order">
+      <img src="/img/collage/slay.png" alt="SLAY" />
+      <span id="lb-slay-label">ADD TO ORDER</span>
+    </button>
+  </div>
   <button id="lb-prev">‹</button>
   <button id="lb-next">›</button>
   <p id="lb-counter"></p>
@@ -253,7 +310,249 @@ import Layout from "../layouts/Layout.astro";
   const entryCurtain = document.getElementById("entry-curtain")!;
   const mm = gsap.matchMedia();
 
+  /* ─── ORDER SYSTEM (always runs) ─── */
+  {
+    const orderPanel    = document.getElementById("order-panel")!;
+    const orderBackdrop = document.getElementById("order-backdrop")!;
+    const orderItemsEl  = document.getElementById("order-items")!;
+    const orderClose    = document.getElementById("order-close")!;
+    const slayBadge     = document.getElementById("slay-badge")!;
+    const slayBtn2      = document.getElementById("slay-btn") as HTMLAnchorElement | null;
+
+    let orderItems: { name: string; price: string; src: string; card: Element }[] = [];
+
+    // Build product names + prices by section
+    const cardNames = new Map<Element, string>();
+    const cardPrices = new Map<Element, string>();
+    document.querySelectorAll<HTMLElement>(".group-label").forEach(label => {
+      const cat = label.querySelector(".group-name")?.textContent?.trim() || "LOOK";
+      const price = label.querySelector(".group-price")?.textContent?.trim() || "";
+      let el = label.nextElementSibling;
+      let n = 1;
+      while (el && !el.classList.contains("group-label")) {
+        el.querySelectorAll<HTMLElement>(".card").forEach(card => {
+          if (card.querySelector("img")) {
+            cardNames.set(card, `${cat} ${n++}`);
+            cardPrices.set(card, price);
+          }
+        });
+        el = el.nextElementSibling;
+      }
+    });
+
+    // Inject + buttons
+    document.querySelectorAll<HTMLElement>(".card").forEach(card => {
+      if (!card.querySelector("img")) return;
+      const name = cardNames.get(card) || "ITEM";
+      const btn = document.createElement("button");
+      btn.className = "card-add";
+      btn.innerHTML = `<img src="/img/collage/slay.png" alt="Add to order" />`;
+      btn.setAttribute("aria-label", "Add to order");
+      btn.setAttribute("type", "button");
+      card.appendChild(btn);
+
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = orderItems.findIndex(i => i.card === card);
+        if (idx >= 0) {
+          orderItems.splice(idx, 1);
+          card.classList.remove("card-selected");
+        } else {
+          const img = card.querySelector("img") as HTMLImageElement;
+          const price = cardPrices.get(card) || "";
+          orderItems.push({ name, price, src: img?.src || "", card });
+          card.classList.add("card-selected");
+          gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.35, ease: "back.out(3)" });
+        }
+        updateBadge();
+      });
+    });
+
+    const orderTotalValue = document.getElementById("order-total-value")!;
+
+    function updateTotal() {
+      const sum = orderItems.reduce((acc, item) => {
+        const n = parseInt(item.price.replace(/[^0-9]/g, ""), 10);
+        return acc + (isNaN(n) ? 0 : n);
+      }, 0);
+      orderTotalValue.textContent = sum > 0 ? `${sum.toLocaleString("sr-RS")} RSD` : "0 RSD";
+    }
+
+    function updateBadge() {
+      const n = orderItems.length;
+      slayBadge.textContent = String(n);
+      if (n > 0) {
+        gsap.to(slayBadge, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)" });
+      } else {
+        gsap.to(slayBadge, { autoAlpha: 0, scale: 0, duration: 0.2 });
+      }
+      updateTotal();
+    }
+
+    function renderPanel() {
+      orderItemsEl.innerHTML = "";
+      if (orderItems.length === 0) {
+        orderItemsEl.innerHTML = `
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2.5rem 1rem;text-align:center;height:100%;min-height:300px;">
+            <p style="font-family:'TAN-NIMBUS',sans-serif;color:rgba(255,255,255,0.85);font-size:0.85rem;letter-spacing:0.18em;line-height:1.9;margin:0;">
+              NO ITEMS ADDED YET.<br>CLICK
+            </p>
+            <img src="/img/collage/slay.png" alt="SLAY" style="width:80px;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4));transform:rotate(8deg);" />
+            <p style="font-family:'TAN-NIMBUS',sans-serif;color:rgba(255,255,255,0.85);font-size:0.85rem;letter-spacing:0.18em;line-height:1.9;margin:0;">
+              ON ANY LOOK TO ADD IT.
+            </p>
+          </div>`;
+        return;
+      }
+      orderItems.forEach((item, idx) => {
+        const card = document.createElement("div");
+        Object.assign(card.style, {
+          position: "relative", borderRadius: "6px", overflow: "hidden",
+          background: "#2a2427", flexShrink: "0",
+        });
+
+        const img = document.createElement("img");
+        img.src = item.src; img.alt = item.name;
+        Object.assign(img.style, {
+          width: "100%", aspectRatio: "3/4", objectFit: "cover",
+          display: "block", filter: "none",
+        });
+
+        const footer = document.createElement("div");
+        Object.assign(footer.style, {
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "0.6rem 0.8rem",
+          background: "rgba(28,24,27,0.85)",
+        });
+
+        const info = document.createElement("div");
+        Object.assign(info.style, { display: "flex", flexDirection: "column", gap: "0.2rem", flex: "1" });
+
+        const label = document.createElement("span");
+        label.textContent = item.name;
+        Object.assign(label.style, {
+          fontFamily: "'TAN-NIMBUS', sans-serif",
+          color: "#f6aad9", fontSize: "0.72rem", letterSpacing: "0.14em",
+        });
+
+        const priceEl = document.createElement("span");
+        priceEl.textContent = item.price;
+        Object.assign(priceEl.style, {
+          fontFamily: "'TAN-NIMBUS', sans-serif",
+          color: "#fff", fontSize: "0.8rem", letterSpacing: "0.1em",
+        });
+
+        info.appendChild(label);
+        if (item.price) info.appendChild(priceEl);
+
+        const del = document.createElement("button");
+        del.setAttribute("aria-label", "Remove");
+        del.textContent = "✕";
+        Object.assign(del.style, {
+          width: "30px", height: "30px", minWidth: "30px",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "#f6aad9", border: "none", borderRadius: "50%",
+          cursor: "pointer", color: "#1c181b", fontSize: "1rem",
+          fontWeight: "bold", fontFamily: "system-ui, sans-serif",
+          lineHeight: "1", opacity: "1", visibility: "visible",
+        });
+        del.addEventListener("mouseenter", () => { del.style.background = "#e890c4"; });
+        del.addEventListener("mouseleave", () => { del.style.background = "#f6aad9"; });
+        del.addEventListener("click", () => {
+          item.card.classList.remove("card-selected");
+          orderItems.splice(idx, 1);
+          updateBadge();
+          renderPanel();
+        });
+
+        footer.appendChild(info);
+        footer.appendChild(del);
+        card.appendChild(img);
+        card.appendChild(footer);
+        orderItemsEl.appendChild(card);
+      });
+      gsap.from(orderItemsEl.children, { x: -20, opacity: 0, stagger: 0.06, duration: 0.3, ease: "power2.out", clearProps: "all" });
+    }
+
+    function openPanel() {
+      renderPanel();
+      gsap.set(orderPanel, { display: "flex", x: "-100%" });
+      gsap.set(orderBackdrop, { display: "block" });
+      gsap.to(orderPanel, { x: 0, duration: 0.4, ease: "power3.out" });
+      gsap.fromTo(orderBackdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 });
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePanel() {
+      gsap.to(orderPanel, { x: "-100%", duration: 0.35, ease: "power3.in", onComplete: () => gsap.set(orderPanel, { display: "none" }) });
+      gsap.to(orderBackdrop, { autoAlpha: 0, duration: 0.3, onComplete: () => gsap.set(orderBackdrop, { display: "none" }) });
+      document.body.style.overflow = "";
+    }
+
+    orderClose.addEventListener("click", closePanel);
+    orderBackdrop.addEventListener("click", closePanel);
+
+    if (slayBtn2) {
+      slayBtn2.addEventListener("click", (e) => { e.preventDefault(); openPanel(); });
+    }
+
+    const orderConfirm = document.getElementById("order-confirm")!;
+    const orderConfirmMartini = document.getElementById("order-confirm-martini")!;
+    const orderDm = document.getElementById("order-dm") as HTMLAnchorElement;
+    const igUrl = orderDm.href;
+
+    orderDm.addEventListener("click", (e) => {
+      e.preventDefault();
+      closePanel();
+      gsap.set(orderConfirm, { display: "flex" });
+      gsap.fromTo(orderConfirm, { autoAlpha: 0, scale: 0.85 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" });
+      gsap.fromTo(orderConfirmMartini,
+        { rotation: -20, scale: 0 },
+        { rotation: 10, scale: 1, duration: 0.7, delay: 0.2, ease: "back.out(3)",
+          onComplete: () => gsap.to(orderConfirmMartini, { rotation: 14, duration: 1.6, repeat: -1, yoyo: true, ease: "sine.inOut" })
+        }
+      );
+      setTimeout(() => {
+        gsap.to(orderConfirm, { autoAlpha: 0, duration: 0.8, ease: "power2.in",
+          onComplete: () => gsap.set(orderConfirm, { display: "none" }) });
+      }, 10000);
+    });
+
+    (window as any).__grlToggle = (card: Element) => {
+      const name = cardNames.get(card) || "ITEM";
+      const price = cardPrices.get(card) || "";
+      const productImg = Array.from(card.querySelectorAll<HTMLImageElement>("img"))
+        .find(img => !img.closest(".card-add"));
+      const src = productImg?.src || "";
+      const idx = orderItems.findIndex(i => i.card === card);
+      if (idx >= 0) {
+        orderItems.splice(idx, 1);
+        card.classList.remove("card-selected");
+      } else {
+        orderItems.push({ name, price, src, card });
+        card.classList.add("card-selected");
+      }
+      const btn = card.querySelector<HTMLButtonElement>(".card-add");
+      if (btn) gsap.fromTo(btn, { scale: 0.9 }, { scale: 1, duration: 0.3, ease: "back.out(3)" });
+      updateBadge();
+    };
+    (window as any).__grlIsAdded = (card: Element) => orderItems.some(i => i.card === card);
+  }
+
   mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+    /* ─── SLAY ORDER BUTTON ANIMATIONS ─── */
+    const slayBtn = document.getElementById("slay-btn") as HTMLAnchorElement | null;
+    if (slayBtn) {
+      gsap.fromTo(slayBtn,
+        { scale: 0, autoAlpha: 0, rotation: 12 },
+        { scale: 1, autoAlpha: 1, rotation: 12, duration: 0.7, delay: 1.4, ease: "back.out(2.5)" }
+      );
+      gsap.to(slayBtn, { rotation: 6, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 2 });
+      slayBtn.addEventListener("mouseenter", () => gsap.to(slayBtn, { scale: 1.15, duration: 0.2, ease: "back.out(2)" }));
+      slayBtn.addEventListener("mouseleave", () => gsap.to(slayBtn, { scale: 1, duration: 0.25, ease: "power2.inOut" }));
+    }
 
     /* ─── GUMMY BEAR SCROLL-TO-TOP ─── */
     const gummy = document.getElementById("gummy-btn") as HTMLElement | null;
@@ -325,6 +624,7 @@ import Layout from "../layouts/Layout.astro";
         clipPath: "inset(100% 0 0 0)",
         duration: 1.1, ease: "power4.out",
         scrollTrigger: { trigger: card, start: "top 90%" },
+        onComplete: () => gsap.set(card, { clearProps: "clipPath" }),
       });
 
       const media = card.querySelector("img, video");
@@ -390,7 +690,6 @@ import Layout from "../layouts/Layout.astro";
 
   /* ── MOBILE LIGHTBOX ── */
   (function () {
-    if (window.innerWidth > 768) return;
 
     const overlay   = document.getElementById("lb-overlay")!;
     const lbImg     = document.getElementById("lb-img") as HTMLImageElement;
@@ -399,21 +698,27 @@ import Layout from "../layouts/Layout.astro";
     const btnClose  = document.getElementById("lb-close")!;
     const btnPrev   = document.getElementById("lb-prev")!;
     const btnNext   = document.getElementById("lb-next")!;
+    const lbSlay = document.getElementById("lb-slay") as HTMLButtonElement;
 
     // Build groups per category
-    type Group = { name: string; imgs: HTMLImageElement[] };
+    type Group = { name: string; imgs: HTMLImageElement[]; cards: HTMLElement[] };
     const groups: Group[] = [];
     const imgToGroup = new Map<HTMLImageElement, { group: Group; idx: number }>();
 
     document.querySelectorAll<HTMLElement>(".group-label").forEach((label) => {
       const name = label.querySelector(".group-name")?.textContent?.trim() || "";
       const imgs: HTMLImageElement[] = [];
+      const cards: HTMLElement[] = [];
       let el = label.nextElementSibling;
       while (el && !el.classList.contains("group-label")) {
-        el.querySelectorAll<HTMLImageElement>(".card img").forEach(img => imgs.push(img));
+        el.querySelectorAll<HTMLImageElement>(".card img").forEach(img => {
+          if (img.closest(".card-add")) return;
+          const card = img.closest<HTMLElement>(".card");
+          if (card) { imgs.push(img); cards.push(card); }
+        });
         el = el.nextElementSibling;
       }
-      const group: Group = { name, imgs };
+      const group: Group = { name, imgs, cards };
       groups.push(group);
       imgs.forEach((img, idx) => imgToGroup.set(img, { group, idx }));
     });
@@ -425,6 +730,8 @@ import Layout from "../layouts/Layout.astro";
       lbImg.src = currentGroup.imgs[currentIdx].src;
       lbCat.textContent = currentGroup.name;
       lbCounter.textContent = `${currentIdx + 1} / ${currentGroup.imgs.length}`;
+      const card = currentGroup.cards[currentIdx];
+      lbSlay.classList.toggle("lb-slay-added", !!((window as any).__grlIsAdded?.(card)));
     }
 
     function open(img: HTMLImageElement) {
@@ -436,9 +743,18 @@ import Layout from "../layouts/Layout.astro";
       gsap.set(overlay, { display: "flex" });
       gsap.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: "power2.out" });
       document.body.style.overflow = "hidden";
+      // pop-in + wobble loop
+      gsap.killTweensOf(lbSlay);
+      gsap.fromTo(lbSlay,
+        { scale: 0, rotation: 20, autoAlpha: 0 },
+        { scale: 1, rotation: 8, autoAlpha: 1, duration: 0.5, delay: 0.25, ease: "back.out(3)",
+          onComplete: () => gsap.to(lbSlay, { rotation: 12, duration: 1.4, repeat: -1, yoyo: true, ease: "sine.inOut" })
+        }
+      );
     }
 
     function close() {
+      gsap.killTweensOf(lbSlay);
       gsap.to(overlay, { autoAlpha: 0, duration: 0.25, onComplete: () => gsap.set(overlay, { display: "none" }) });
       document.body.style.overflow = "";
     }
@@ -460,6 +776,17 @@ import Layout from "../layouts/Layout.astro";
     btnClose.addEventListener("click", close);
     btnPrev.addEventListener("click", () => navigate(-1));
     btnNext.addEventListener("click", () => navigate(1));
+
+    lbSlay.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const card = currentGroup.cards[currentIdx];
+      if (card && (window as any).__grlToggle) {
+        (window as any).__grlToggle(card);
+        lbSlay.classList.toggle("lb-slay-added", !!((window as any).__grlIsAdded?.(card)));
+        gsap.fromTo(lbSlay, { scale: 0.8 }, { scale: 1, duration: 0.4, ease: "back.out(3)" });
+      }
+    });
+
 
     let startX = 0;
     overlay.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
@@ -493,17 +820,23 @@ import Layout from "../layouts/Layout.astro";
     color: #f6aad9; margin: 0; white-space: nowrap;
   }
   #lb-counter {
-    position: absolute; bottom: 5rem; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
     font-family: "TAN-NIMBUS", sans-serif;
     font-size: 0.9rem; letter-spacing: 0.2em;
     color: rgba(255,255,255,0.7); margin: 0;
     white-space: nowrap;
+  }
+  #lb-img-wrap {
+    position: relative;
+    display: inline-flex;
+    max-width: 94vw; max-height: 82vh;
   }
   #lb-img {
     max-width: 94vw; max-height: 82vh;
     object-fit: contain;
     border-radius: 4px;
     user-select: none; pointer-events: none;
+    display: block;
   }
   #lb-close {
     position: absolute; top: 1rem; right: 1.2rem;
@@ -517,8 +850,28 @@ import Layout from "../layouts/Layout.astro";
   }
   #lb-prev { left: 0.5rem; }
   #lb-next { right: 0.5rem; }
-  @media (min-width: 769px) { #lb-overlay { display: none !important; } }
-
+  #lb-slay {
+    position: absolute; bottom: 0.8rem; right: 0.8rem;
+    background: none; border: none; padding: 0; cursor: pointer;
+    width: 88px; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    opacity: 0; visibility: hidden;
+  }
+  #lb-slay img {
+    width: 100%; height: auto; display: block; pointer-events: none;
+    filter: drop-shadow(0 3px 12px rgba(0,0,0,0.7));
+  }
+  #lb-slay-label {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: 0.55rem; letter-spacing: 0.15em;
+    color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    white-space: nowrap; pointer-events: none;
+    background: rgba(0,0,0,0.45); border-radius: 999px;
+    padding: 2px 8px;
+  }
+  #lb-slay:hover img { filter: drop-shadow(0 3px 16px rgba(246,170,217,0.6)); }
+  #lb-slay.lb-slay-added img { opacity: 0.45; }
+  #lb-slay.lb-slay-added #lb-slay-label { color: #a8d5a2; }
   /* ── COLLAGE STICKERS ── */
   .stk-layer {
     position: fixed; inset: 0;
@@ -546,6 +899,203 @@ import Layout from "../layouts/Layout.astro";
     transition: transform 0.2s ease;
   }
   #gummy-btn:hover { transform: rotate(-16deg) scale(1.12); }
+
+  /* ── ORDER PANEL ── */
+  #order-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 9400;
+  }
+  #order-confirm {
+    display: none; position: fixed; inset: 0; z-index: 99999;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 1.5rem; background: rgba(28,24,27,0.92);
+    visibility: hidden; opacity: 0;
+  }
+  #order-confirm-martini {
+    width: 180px; height: auto;
+    filter: drop-shadow(0 6px 24px rgba(246,170,217,0.4));
+  }
+  #order-confirm-text {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #fff; font-size: clamp(1rem, 4vw, 1.5rem);
+    letter-spacing: 0.12em; text-align: center; line-height: 1.8;
+    margin: 0;
+  }
+  #order-confirm-text strong { color: #f6aad9; font-size: 1.3em; }
+  #order-confirm-ig {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.5); font-size: 0.7rem;
+    letter-spacing: 0.2em; text-align: center; line-height: 1.8; margin: 0;
+  }
+  #order-confirm-ig a { text-decoration: none; }
+  #order-confirm-ig strong { color: #f6aad9; }
+  #order-confirm-ig a:hover strong { text-decoration: underline; }
+  #order-panel {
+    display: none; flex-direction: column;
+    position: fixed; top: 0; left: 0;
+    width: 420px; max-width: 95vw; height: 100vh;
+    background: #1c181b; z-index: 9500;
+    box-shadow: 4px 0 40px rgba(0,0,0,0.5);
+    transform: translateX(-100%);
+  }
+  #order-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.8rem 1.5rem 1rem;
+    border-bottom: 1px solid rgba(246,170,217,0.2);
+  }
+  #order-header h3 {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #f6aad9; font-size: 1.1rem;
+    letter-spacing: 0.25em; margin: 0;
+  }
+  #order-close {
+    background: none; border: none; color: rgba(255,255,255,0.5);
+    font-size: 1.2rem; cursor: pointer; padding: 0.3rem;
+    transition: color 0.2s;
+  }
+  #order-close:hover { color: #f6aad9; }
+  #order-hint {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.7); margin: 0;
+    padding: 0.8rem 1.5rem;
+  }
+  #order-hint strong { color: #f6aad9; }
+  #order-items {
+    flex: 1; overflow-y: auto;
+    padding: 0.5rem 1.5rem;
+    display: flex; flex-direction: column; gap: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: #f6aad9 rgba(255,255,255,0.06);
+  }
+  #order-items::-webkit-scrollbar { width: 4px; }
+  #order-items::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 999px; }
+  #order-items::-webkit-scrollbar-thumb { background: #f6aad9; border-radius: 999px; }
+  #order-items::-webkit-scrollbar-thumb:hover { background: #e890c4; }
+  .order-item {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px; padding: 0.6rem 0.8rem;
+  }
+  .order-item img {
+    width: 52px; height: 52px;
+    object-fit: cover; border-radius: 3px; flex-shrink: 0;
+    filter: none !important;
+  }
+  .order-item span {
+    flex: 1; font-family: "TAN-NIMBUS", sans-serif;
+    color: #fff; font-size: 0.62rem; letter-spacing: 0.12em;
+    line-height: 1.4;
+  }
+  .order-remove {
+    background: rgba(255,255,255,0.15) !important;
+    border: 1.5px solid rgba(255,255,255,0.4) !important;
+    color: #fff !important; border-radius: 50% !important;
+    cursor: pointer !important; padding: 0 !important;
+    width: 32px !important; height: 32px !important;
+    min-width: 32px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    flex-shrink: 0 !important;
+    opacity: 1 !important; visibility: visible !important;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .order-remove:hover { background: rgba(246,170,217,0.3) !important; color: #f6aad9 !important; border-color: #f6aad9 !important; }
+  .order-remove svg { display: block; pointer-events: none; }
+  .order-empty {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.25); font-size: 0.65rem;
+    letter-spacing: 0.12em; text-align: center;
+    padding: 2rem 0; line-height: 1.8;
+  }
+  #order-footer {
+    padding: 1rem 1.5rem 2rem;
+    border-top: 1px solid rgba(246,170,217,0.2);
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  #order-total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 0.2rem;
+  }
+  #order-total-label {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: rgba(255,255,255,0.5); font-size: 0.65rem; letter-spacing: 0.2em;
+  }
+  #order-total-value {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #f6aad9; font-size: 1rem; letter-spacing: 0.12em;
+  }
+  #order-dm {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+    text-align: center; font-family: "TAN-NIMBUS", sans-serif;
+    color: #1c181b; background: #f6aad9;
+    border-radius: 2px; padding: 14px 20px;
+    text-decoration: none; font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    transition: background 0.25s, color 0.25s;
+  }
+  #order-dm img { width: 100px; height: auto; pointer-events: none; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.35)); }
+  #order-dm:hover { background: #fff; }
+
+  /* ── CARD ADD BUTTON ── */
+  /* ── CARD SLAY ADD BUTTON ── */
+  .card-add {
+    position: absolute !important;
+    bottom: 8px !important; right: 8px !important;
+    z-index: 999 !important;
+    width: 56px !important; height: auto !important;
+    background: none !important; border: none !important;
+    padding: 0 !important; cursor: pointer !important;
+    opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)) !important;
+    transform: rotate(8deg) !important;
+    transition: transform 0.2s !important;
+  }
+  .card-add img { width: 100% !important; display: block !important; }
+  .card-add:hover { transform: rotate(8deg) scale(1.15) !important; }
+  .card.card-selected .card-add { opacity: 0.5 !important; }
+  .card.card-selected::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(70,100,65,0.25); z-index: 3; pointer-events: none;
+  }
+
+  /* ── SLAY BADGE ── */
+  #slay-badge {
+    position: absolute; top: -5px; right: -5px;
+    background: #466441; color: #fff;
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: 0.55rem; letter-spacing: 0;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0);
+    pointer-events: none;
+  }
+  #slay-btn { position: relative; }
+
+  /* ── SLAY ORDER BUTTON ── */
+  #slay-btn {
+    position: fixed;
+    bottom: 2.2rem; left: 2rem;
+    z-index: 100;
+    display: block;
+    cursor: pointer;
+    opacity: 0;
+    transform: rotate(12deg);
+    text-decoration: none;
+    filter: drop-shadow(0 6px 18px rgba(246,170,217,0.55));
+    transition: filter 0.2s ease;
+  }
+  #slay-btn img {
+    width: 90px;
+    display: block;
+    pointer-events: none;
+  }
+  #slay-btn:hover {
+    filter: drop-shadow(0 8px 24px rgba(246,170,217,0.85));
+  }
+  @media (max-width: 480px) {
+    #slay-btn img { width: 70px; }
+    #slay-btn { bottom: 1.5rem; left: 1.2rem; }
+  }
 
   /* ── HERO ── */
   .hero {
@@ -678,7 +1228,15 @@ import Layout from "../layouts/Layout.astro";
     font-family: "TAN-NIMBUS", sans-serif;
     font-size: clamp(0.75rem, 2vw, 1.2rem);
     color: #466441; letter-spacing: 0.45em;
-    display: block;
+    display: block; flex: 1;
+  }
+  .group-price {
+    font-family: "TAN-NIMBUS", sans-serif;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    color: #1c181b; letter-spacing: 0.2em;
+    background: #f6aad9; border-radius: 999px;
+    padding: 0.2rem 0.9rem;
+    margin-left: auto;
   }
 
   /* ── CARD ── */
@@ -686,7 +1244,6 @@ import Layout from "../layouts/Layout.astro";
     display: block; overflow: hidden;
     position: relative; background: #e8b4b8;
     text-decoration: none;
-    clip-path: inset(0% 0 0 0);
   }
   .card img, .card video {
     width: 100%; height: 110%;
