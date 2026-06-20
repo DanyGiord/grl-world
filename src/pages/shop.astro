@@ -213,6 +213,10 @@ import GradualBlur from "../components/GradualBlur.jsx";
         <span class="lookbook-label">LOOKBOOK 01</span>
         <h2 class="lookbook-title">BORN<br>FOR<br>THE SEA</h2>
         <p class="lookbook-sub">Bikinis — GRL WORLD</p>
+        <div class="lookbook-meta">
+          <span class="lookbook-price">3,490 RSD</span>
+          <button class="size-guide-btn lookbook-size-guide" data-cat="BIKINIS">SIZE GUIDE</button>
+        </div>
       </div>
     </div>
 
@@ -302,6 +306,10 @@ import GradualBlur from "../components/GradualBlur.jsx";
         <span class="lookbook-label">LOOKBOOK 02</span>
         <h2 class="lookbook-title">MADE FOR<br>THE WILD<br>ONES</h2>
         <p class="lookbook-sub">Gym Set — GRL WORLD</p>
+        <div class="lookbook-meta">
+          <span class="lookbook-price">5,990 RSD</span>
+          <button class="size-guide-btn lookbook-size-guide" data-cat="GYM SET">SIZE GUIDE</button>
+        </div>
       </div>
     </div>
 
@@ -348,6 +356,10 @@ import GradualBlur from "../components/GradualBlur.jsx";
         <span class="lookbook-label">LOOKBOOK 03</span>
         <h2 class="lookbook-title">STRIPE.<br>SLAY.<br>REPEAT.</h2>
         <p class="lookbook-sub">Stripe Set — GRL WORLD</p>
+        <div class="lookbook-meta">
+          <span class="lookbook-price">3,990 RSD</span>
+          <button class="size-guide-btn lookbook-size-guide" data-cat="STRIPE SET">SIZE GUIDE</button>
+        </div>
       </div>
     </div>
 
@@ -1244,6 +1256,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
           const added = !!((window as any).__grlIsAdded?.(card));
           lbSlay.classList.toggle("lb-slay-added", added);
           lbSlayLabel.textContent = added ? "ORDERED ✓" : "ADD TO ORDER";
+          if (added) setTimeout(() => close(), 500);
         });
         gsap.fromTo(lbSlay, { scale: 0.8 }, { scale: 1, duration: 0.4, ease: "back.out(3)" });
       }
@@ -1258,6 +1271,24 @@ import GradualBlur from "../components/GradualBlur.jsx";
     });
     overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
   })();
+
+  /* ─── CARD HOVER LABELS ─── */
+  {
+    document.querySelectorAll<HTMLElement>(".group-label").forEach(label => {
+      const cat = label.querySelector(".group-name")?.textContent?.trim() || "";
+      let el = label.nextElementSibling;
+      let n = 1;
+      while (el && !el.classList.contains("group-label")) {
+        el.querySelectorAll<HTMLElement>(".card").forEach(card => {
+          if (!card.querySelector("img, video")) return;
+          const span = card.querySelector<HTMLElement>(".card-hover span");
+          if (span) span.textContent = `${cat} ${String(n).padStart(2, "0")}`;
+          n++;
+        });
+        el = el.nextElementSibling;
+      }
+    });
+  }
 </script>
 
 <style>
@@ -1395,10 +1426,18 @@ import GradualBlur from "../components/GradualBlur.jsx";
   #order-panel {
     display: none; flex-direction: column;
     position: fixed; top: 0; left: 0;
-    width: 420px; max-width: 95vw; height: 100vh;
+    width: 420px; max-width: 100vw; height: 100vh;
     background: #1c181b; z-index: 9500;
     box-shadow: 4px 0 40px rgba(0,0,0,0.5);
     transform: translateX(-100%);
+  }
+  @media (max-width: 480px) {
+    #order-panel { width: 100vw; }
+    #order-dm { padding: 8px 12px; font-size: 0.55rem; gap: 0.3rem; }
+    #order-dm img { width: 42px; }
+    #order-wa { padding: 8px 12px; font-size: 0.55rem; gap: 0.5rem; }
+    #order-wa svg { width: 14px; height: 14px; }
+    #order-footer { padding: 0.7rem 1rem 1.2rem; gap: 0.5rem; }
   }
   #order-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -1695,10 +1734,10 @@ import GradualBlur from "../components/GradualBlur.jsx";
   }
   .group-price {
     font-family: "TAN-NIMBUS", sans-serif;
-    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    font-size: clamp(0.9rem, 2vw, 1.3rem);
     color: #1c181b; letter-spacing: 0.2em;
     background: #f6aad9; border-radius: 999px;
-    padding: 0.2rem 0.9rem;
+    padding: 0.3rem 1.2rem;
     margin-left: auto;
   }
 
@@ -1887,6 +1926,74 @@ import GradualBlur from "../components/GradualBlur.jsx";
     .mission-title { position: static; }
   }
 
+  /* ── MOBILE COMPREHENSIVE ── */
+  @media (max-width: 600px) {
+
+    /* Collection padding */
+    .collection { padding: 2rem 0.75rem; }
+
+    /* Group label — single row */
+    .group-label {
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.8rem 0 0.5rem;
+      overflow: hidden;
+    }
+    .group-num { font-size: clamp(1.6rem, 8vw, 2.4rem); flex-shrink: 0; }
+    .group-name { font-size: clamp(0.55rem, 2.8vw, 0.85rem); letter-spacing: 0.2em; flex: 1; min-width: 0; }
+    .group-price {
+      margin-left: 0;
+      flex-shrink: 0;
+      font-size: 0.55rem;
+      padding: 0.18rem 0.6rem;
+      white-space: nowrap;
+    }
+    .size-guide-btn { flex-shrink: 0; font-size: 0.48rem; padding: 0.2rem 0.5rem; white-space: nowrap; }
+
+    /* Category filter */
+    #cat-filter { padding: 1rem; gap: 0.5rem; }
+    .cat-btn { padding: 0.38rem 0.9rem; font-size: 0.55rem; letter-spacing: 0.18em; }
+
+    /* Grid 2 — 1 column */
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-2 .card { aspect-ratio: 4/5; }
+
+    /* Grid 3 — 2 columns (already set at 700px, keep) */
+
+    /* Card hover — always show on mobile (no hover state) */
+    .card-hover { opacity: 1; background: linear-gradient(to top, rgba(28,24,27,0.55) 0%, transparent 40%); }
+
+    /* Badges / stickers smaller */
+    .stock-badge { font-size: 0.42rem; padding: 3px 7px; }
+    .worn-by { font-size: 0.4rem; padding: 3px 9px; bottom: 48px; }
+    .card-add { width: 44px !important; }
+    .card-share { width: 26px; height: 26px; right: 58px; top: 6px; }
+
+    /* Lookbook */
+    .lookbook-section { height: 55vh; min-height: 320px; }
+    .lookbook-title { font-size: clamp(2rem, 9vw, 3.5rem); }
+    .lookbook-text { padding: 0 5%; }
+
+    /* Mission */
+    .mission { padding: 0 1.2rem; }
+    .mission-inner { padding: 4rem 0 3rem; }
+    .cta-block { padding: 3rem 0 4rem; }
+    .cta-btn { padding: 14px 32px; font-size: clamp(0.75rem, 3.5vw, 0.9rem); }
+
+    /* Size modals */
+    #size-modal-inner { padding: 2rem 1.5rem; width: calc(100vw - 2.5rem); }
+    #size-options { gap: 0.5rem; }
+    .size-btn { padding: 0.6rem 0.8rem; font-size: 0.65rem; min-width: 44px; }
+    #size-guide-inner { padding: 2rem 1.5rem; width: calc(100vw - 2rem); }
+    #size-guide-table th, #size-guide-table td { padding: 0.5rem 0.6rem; font-size: 0.6rem; }
+
+    /* Reviews */
+    .reviews-section { padding: 4rem 0 4rem; }
+    .reviews-header { padding: 0 1.2rem; margin-bottom: 2.5rem; }
+    .reviews-label { font-size: clamp(1.6rem, 8vw, 2.5rem); }
+  }
+
 
   /* ── CLOUDS ── */
   .pink-bg-area {
@@ -2056,6 +2163,26 @@ import GradualBlur from "../components/GradualBlur.jsx";
     color: rgba(255,255,255,0.45); font-size: 0.65rem;
     letter-spacing: 0.35em; margin: 1.5rem 0 0;
   }
+  .lookbook-meta {
+    display: flex; align-items: center; gap: 1.2rem;
+    margin-top: 1.8rem;
+  }
+  .lookbook-price {
+    font-family: "TAN-NIMBUS", sans-serif;
+    color: #fff; font-size: clamp(1rem, 2.5vw, 1.4rem);
+    letter-spacing: 0.15em;
+    background: rgba(246,170,217,0.2);
+    border-radius: 999px; padding: 0.3rem 1.2rem;
+  }
+  .lookbook-size-guide {
+    border-color: rgba(255,255,255,0.4) !important;
+    color: rgba(255,255,255,0.8) !important;
+    font-size: 0.6rem !important;
+  }
+  .lookbook-size-guide:hover {
+    background: rgba(255,255,255,0.15) !important;
+    color: #fff !important;
+  }
   @media (max-width: 700px) {
     .lookbook-section { height: 55vh; min-height: 340px; }
     .lookbook-text { padding: 0 6%; }
@@ -2133,29 +2260,31 @@ import GradualBlur from "../components/GradualBlur.jsx";
     }
   }
   @media (max-width: 600px) {
-    .reviews-section { padding: 4rem 0 5rem; }
-    .reviews-header { padding: 0 1.5rem; align-items: flex-start; }
+    .reviews-section { padding: 3.5rem 0 4rem; overflow: visible; }
+    .reviews-header { padding: 0 1.4rem; margin-bottom: 2rem; }
+    .reviews-label { font-size: clamp(1.8rem, 9vw, 2.6rem); }
     .reviews-track {
       display: flex;
       flex-direction: row;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      gap: 0;
+      gap: 1rem;
       max-width: 100%;
+      padding: 0 1.4rem 1.2rem;
     }
     .reviews-track::-webkit-scrollbar { display: none; }
     .review-card {
       flex-shrink: 0;
-      width: 100vw;
-      min-height: 60vh;
-      scroll-snap-align: center;
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
-      padding: 2.5rem 1.8rem 2.5rem;
-      justify-content: center;
+      width: 82vw;
+      scroll-snap-align: start;
+      border-radius: 10px;
+      padding: 2rem 1.5rem 1.6rem;
+      min-height: unset;
+      gap: 1rem;
     }
+    .review-quote { font-size: 3rem; }
+    .review-text { font-size: 0.7rem; line-height: 1.9; }
   }
 
   /* ── STOCK BADGE ── */
