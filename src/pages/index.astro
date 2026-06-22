@@ -72,46 +72,25 @@ import New from "../components/New.astro";
         ease: "power2.out",
       });
 
-      if (!reduceMotion) {
-        // Clouds — continuous one-direction drift, varied scale/opacity/speed
+      // Clouds — always run regardless of reduce-motion
+      {
         const W = window.innerWidth;
         const clouds = document.querySelectorAll<HTMLElement>(".cl");
         const n = clouds.length;
         const yDrifts = [14,-11,18,-9,12,-16,10,-13,15,-8,20,-12,16];
-
         clouds.forEach((el, i) => {
           const speed   = parseFloat(el.dataset.speed  || "80");
           const yPct    = parseFloat(el.dataset.y      || "50");
           const scale   = parseFloat(el.dataset.scale  || "1");
           const opacity = parseFloat(el.dataset.op     || "0.7");
-
-          // Position vertically via top, remove old left
-          gsap.set(el, {
-            top: `${yPct}%`,
-            scale,
-            opacity,
-            x: -320,
-          });
-
-          // Continuous drift left→right, stagger by fraction of duration
-          gsap.to(el, {
-            x: W + 320,
-            duration: speed,
-            repeat: -1,
-            ease: "none",
-            delay: -(speed * i / n), // negative delay → already mid-flight at load
-          });
-
-          // Gentle vertical bob
-          gsap.to(el, {
-            y: yDrifts[i % yDrifts.length],
-            duration: speed / 9,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-          });
+          const cloudW  = 320 * scale;
+          gsap.set(el, { top: `${yPct}%`, scale, opacity, x: -cloudW });
+          gsap.to(el, { x: W + cloudW, duration: speed, repeat: -1, ease: "none", delay: -(speed * i / n) });
+          gsap.to(el, { y: yDrifts[i % yDrifts.length], duration: speed / 9, repeat: -1, yoyo: true, ease: "sine.inOut" });
         });
+      }
 
+      if (!reduceMotion) {
         // Image float
         gsap.to(".img-1", {
           y: -8,
@@ -202,12 +181,12 @@ import New from "../components/New.astro";
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    clip-path: inset(0);
   }
   .cl {
     position: absolute;
     left: 0;
     width: 320px;
+    will-change: transform;
   }
   @media (max-width: 767px) {
     .cl { width: 180px; }

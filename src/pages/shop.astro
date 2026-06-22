@@ -995,9 +995,8 @@ import GradualBlur from "../components/GradualBlur.jsx";
     });
   }
 
-  mm.add("(prefers-reduced-motion: no-preference)", () => {
-
-    /* ─── SLAY ORDER BUTTON ANIMATIONS ─── */
+  /* ─── SLAY ORDER BUTTON (always visible) ─── */
+  {
     const slayBtn = document.getElementById("slay-btn") as HTMLAnchorElement | null;
     if (slayBtn) {
       gsap.set(slayBtn, { scale: 0, autoAlpha: 0, rotation: 12 });
@@ -1011,43 +1010,45 @@ import GradualBlur from "../components/GradualBlur.jsx";
       slayBtn.addEventListener("mouseenter", () => gsap.to(slayBtn, { scale: 1.15, duration: 0.2, ease: "back.out(2)" }));
       slayBtn.addEventListener("mouseleave", () => gsap.to(slayBtn, { scale: 1, duration: 0.25, ease: "power2.inOut" }));
     }
+  }
 
-    /* ─── GUMMY BEAR SCROLL-TO-TOP ─── */
+  /* ─── GUMMY BEAR SCROLL-TO-TOP (always visible) ─── */
+  {
     const gummy = document.getElementById("gummy-btn") as HTMLElement | null;
     if (gummy) {
-      // float animation
       gsap.to(gummy, { y: -10, duration: 2.9, repeat: -1, yoyo: true, ease: "sine.inOut" });
-
-      // show after 40% of page scrolled
       ScrollTrigger.create({
         trigger: document.body,
         start: "40% top",
         onEnter: () => gsap.to(gummy, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }),
         onLeaveBack: () => gsap.to(gummy, { autoAlpha: 0, scale: 0.5, duration: 0.3 }),
       });
-
       gummy.addEventListener("click", () => {
         gsap.to(gummy, { rotation: -16 + 360, duration: 0.6, ease: "power2.inOut", onComplete: () => gsap.set(gummy, { rotation: -16 }) });
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
     }
+  }
 
-    /* ─── CLOUDS ─── */
-    {
-      const W = window.innerWidth;
-      const clouds = document.querySelectorAll<HTMLElement>(".cloud-layer .cl");
-      const n = clouds.length;
-      const yDrifts = [14,-11,18,-9,12,-16,10,-13,15,-8,20,-12,16];
-      clouds.forEach((el, i) => {
-        const speed   = parseFloat(el.dataset.speed || "80");
-        const yPct    = parseFloat(el.dataset.y     || "50");
-        const scale   = parseFloat(el.dataset.scale || "1");
-        const opacity = parseFloat(el.dataset.op    || "0.35");
-        gsap.set(el, { top: `${yPct}%`, scale, opacity, x: -320 });
-        gsap.to(el, { x: W + 320, duration: speed, repeat: -1, ease: "none", delay: -(speed * i / n) });
-        gsap.to(el, { y: yDrifts[i % yDrifts.length], duration: speed / 9, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      });
-    }
+  /* ─── CLOUDS (always) ─── */
+  {
+    const W = window.innerWidth;
+    const clouds = document.querySelectorAll<HTMLElement>(".cloud-layer .cl");
+    const n = clouds.length;
+    const yDrifts = [14,-11,18,-9,12,-16,10,-13,15,-8,20,-12,16];
+    clouds.forEach((el, i) => {
+      const speed   = parseFloat(el.dataset.speed || "80");
+      const yPct    = parseFloat(el.dataset.y     || "50");
+      const scale   = parseFloat(el.dataset.scale || "1");
+      const opacity = parseFloat(el.dataset.op    || "0.35");
+      const cloudW = 320 * scale;
+      gsap.set(el, { top: `${yPct}%`, scale, opacity, x: -cloudW });
+      gsap.to(el, { x: W + cloudW, duration: speed, repeat: -1, ease: "none", delay: -(speed * i / n) });
+      gsap.to(el, { y: yDrifts[i % yDrifts.length], duration: speed / 9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    });
+  }
+
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
 
     /* ─── ENTRY CURTAIN ─── */
     gsap.to(entryCurtain, {
@@ -1436,7 +1437,6 @@ import GradualBlur from "../components/GradualBlur.jsx";
   .stk-layer {
     position: fixed; inset: 0;
     pointer-events: none; z-index: 10;
-    overflow: hidden;
   }
   .stk {
     position: absolute; user-select: none;
@@ -2072,7 +2072,7 @@ import GradualBlur from "../components/GradualBlur.jsx";
     pointer-events: none; z-index: 0;
   }
   .cloud-layer .cl {
-    position: absolute; left: 0; width: 320px;
+    position: absolute; left: 0; width: 320px; will-change: transform;
   }
   @media (max-width: 767px) {
     .cloud-layer .cl { width: 180px; }
