@@ -455,7 +455,6 @@ import GradualBlur from "../components/GradualBlur.jsx";
   gsap.registerPlugin(ScrollTrigger);
 
   const entryCurtain = document.getElementById("entry-curtain")!;
-  const mm = gsap.matchMedia();
 
   /* ─── ORDER SYSTEM (always runs) ─── */
   {
@@ -1048,180 +1047,118 @@ import GradualBlur from "../components/GradualBlur.jsx";
     });
   }
 
-  mm.add("(prefers-reduced-motion: no-preference)", () => {
+  /* ─── ENTRY CURTAIN ─── */
+  gsap.to(entryCurtain, {
+    scaleY: 0, duration: 0.7, ease: "power3.inOut",
+    onComplete: () => entryCurtain.remove(),
+  });
 
-    /* ─── ENTRY CURTAIN ─── */
-    gsap.to(entryCurtain, {
-      scaleY: 0,
-      duration: 0.7,
-      ease: "power3.inOut",
-      onComplete: () => entryCurtain.remove(),
-    });
+  /* ─── HERO ─── */
+  gsap.from(".word", { y: 80, autoAlpha: 0, duration: 1.3, ease: "power3.out", stagger: 0.15, delay: 0.4 });
+  gsap.from(".hero-sub",    { y: 30,  autoAlpha: 0, duration: 0.9, ease: "power2.out", delay: 0.85 });
+  gsap.from(".back-link",   { x: -20, autoAlpha: 0, duration: 0.7, ease: "power2.out", delay: 0.5 });
+  gsap.from(".scroll-hint", { autoAlpha: 0, duration: 0.7, delay: 1.2 });
 
-    /* ─── HERO ─── */
-    gsap.from(".word", {
-      y: 80, autoAlpha: 0, duration: 1.3, ease: "power3.out",
-      stagger: 0.15, delay: 0.4,
-    });
-    gsap.from(".hero-sub",    { y: 30,  autoAlpha: 0, duration: 0.9, ease: "power2.out", delay: 0.85 });
-    gsap.from(".back-link",   { x: -20, autoAlpha: 0, duration: 0.7, ease: "power2.out", delay: 0.5 });
-    gsap.from(".scroll-hint", { autoAlpha: 0, duration: 0.7, delay: 1.2 });
+  /* ─── HERO PARALLAX ─── */
+  gsap.to(".hero-video", {
+    scale: 1.12, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
+  });
+  gsap.to(".scroll-hint", {
+    autoAlpha: 0,
+    scrollTrigger: { trigger: ".hero", start: "20% top", end: "40% top", scrub: true },
+  });
 
-    /* ─── HERO PARALLAX ─── */
-    gsap.to(".hero-video", {
-      scale: 1.12, ease: "none",
-      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-    });
+  /* ─── MARQUEE ─── */
+  gsap.fromTo(".marquee-wrap",
+    { opacity: 0 },
+    { opacity: 1, duration: 0.8, scrollTrigger: { trigger: ".marquee-wrap", start: "top 100%", once: true } }
+  );
 
-    gsap.to(".scroll-hint", {
-      autoAlpha: 0,
-      scrollTrigger: { trigger: ".hero", start: "20% top", end: "40% top", scrub: true },
-    });
+  /* ─── GROUP LABELS ─── */
+  document.querySelectorAll(".group-label").forEach((label) => {
+    const num  = label.querySelector(".group-num");
+    const name = label.querySelector(".group-name");
+    const st   = { trigger: label, start: "top 100%", once: true };
+    gsap.from(label, { scaleX: 0, transformOrigin: "left", duration: 0.9, ease: "power3.out", scrollTrigger: st });
+    gsap.fromTo(num,  { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: "power3.out", delay: 0.15, scrollTrigger: st });
+    gsap.fromTo(name, { x: 30,  opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power2.out", delay: 0.3,  scrollTrigger: st });
+  });
 
-    /* ─── MARQUEE ─── */
-    gsap.fromTo(".marquee-wrap",
-      { opacity: 0 },
-      { opacity: 1, duration: 0.8,
-        scrollTrigger: { trigger: ".marquee-wrap", start: "top 100%", once: true } }
+  /* ─── CARDS: FADE REVEAL + IMAGE PARALLAX ─── */
+  document.querySelectorAll(".card").forEach((card) => {
+    gsap.fromTo(card,
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, duration: 0.85, ease: "power3.out",
+        scrollTrigger: { trigger: card, start: "top 102%", once: true } }
     );
-
-    /* ─── GROUP LABELS ─── */
-    document.querySelectorAll(".group-label").forEach((label) => {
-      const num  = label.querySelector(".group-num");
-      const name = label.querySelector(".group-name");
-      const st   = { trigger: label, start: "top 100%", once: true };
-      gsap.from(label, { scaleX: 0, transformOrigin: "left", duration: 0.9, ease: "power3.out", scrollTrigger: st });
-      gsap.fromTo(num,  { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: "power3.out", delay: 0.15, scrollTrigger: st });
-      gsap.fromTo(name, { x: 30,  opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power2.out", delay: 0.3,  scrollTrigger: st });
-    });
-
-    /* ─── CARDS: FADE REVEAL + IMAGE PARALLAX ─── */
-    document.querySelectorAll(".card").forEach((card) => {
-      gsap.fromTo(card,
-        { opacity: 0, y: 28 },
-        { opacity: 1, y: 0, duration: 0.85, ease: "power3.out",
-          scrollTrigger: { trigger: card, start: "top 102%", once: true } }
-      );
-
-      const media = card.querySelector("img, video");
-      if (media) {
-        gsap.fromTo(media, { y: "-8%" }, {
-          y: "8%", ease: "none",
-          scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true },
-        });
-      }
-    });
-
-    window.addEventListener("load", () => {
-      ScrollTrigger.refresh();
-      // Fallback: if any animated element is still invisible after layout settles, force it visible
-      setTimeout(() => {
-        document.querySelectorAll<HTMLElement>(
-          ".review-card, .reviews-eyebrow, .reviews-label, .mission-title, .mission-body, .cta-label, .cta-btn, .lookbook-label, .lookbook-title, .lookbook-sub, .cat-btn, .marquee-wrap"
-        ).forEach(el => {
-          const computed = window.getComputedStyle(el);
-          if (parseFloat(computed.opacity) < 0.1) gsap.set(el, { opacity: 1, y: 0, x: 0, visibility: "visible" });
-        });
-      }, 800);
-    });
-    setTimeout(() => ScrollTrigger.refresh(), 1500);
-
-    /* ─── MISSION + CTA ─── */
-    gsap.from(".mission-top-line", {
-      scaleX: 0, transformOrigin: "left", duration: 1.2, ease: "power3.out",
-      scrollTrigger: { trigger: ".mission", start: "top bottom", once: true },
-    });
-    gsap.fromTo(".mission-title",
-      { opacity: 0, y: 0 },
-      { opacity: 1, duration: 1, ease: "power2.out", delay: 0.2,
-        scrollTrigger: { trigger: ".mission", start: "top bottom", once: true } }
-    );
-    gsap.fromTo(".mission-body",
-      { opacity: 0, y: 35 },
-      { opacity: 1, y: 0, duration: 1.1, ease: "power2.out", delay: 0.4,
-        scrollTrigger: { trigger: ".mission", start: "top bottom", once: true } }
-    );
-    gsap.from(".cta-divider", {
-      scaleX: 0, transformOrigin: "left", duration: 1, ease: "power3.out",
-      scrollTrigger: { trigger: ".cta-block", start: "top bottom", once: true },
-    });
-    gsap.fromTo(".cta-label",
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.8, delay: 0.2,
-        scrollTrigger: { trigger: ".cta-block", start: "top bottom", once: true } }
-    );
-    gsap.fromTo(".cta-btn",
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.7, delay: 0.4,
-        scrollTrigger: { trigger: ".cta-block", start: "top bottom", once: true } }
-    );
-
-    /* ─── LOOKBOOK PARALLAX ─── */
-    document.querySelectorAll<HTMLElement>(".lookbook-section").forEach(section => {
-      const img = section.querySelector<HTMLElement>(".lookbook-img");
-      const label = section.querySelector<HTMLElement>(".lookbook-label");
-      const title = section.querySelector<HTMLElement>(".lookbook-title");
-      const sub = section.querySelector<HTMLElement>(".lookbook-sub");
-      if (img) {
-        gsap.fromTo(img, { scale: 1.12 }, {
-          scale: 1, ease: "none",
-          scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true },
-        });
-      }
-      if (label) gsap.fromTo(label, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: section, start: "top bottom", once: true } });
-      if (title) gsap.fromTo(title, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.1, delay: 0.15, ease: "power3.out", scrollTrigger: { trigger: section, start: "top bottom", once: true } });
-      if (sub) gsap.fromTo(sub, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, delay: 0.4, scrollTrigger: { trigger: section, start: "top bottom", once: true } });
-    });
-
-    /* ─── REVIEWS ─── */
-    gsap.fromTo(".reviews-eyebrow",
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.6,
-        scrollTrigger: { trigger: ".reviews-section", start: "top bottom", once: true } }
-    );
-    gsap.fromTo(".reviews-label",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.9, delay: 0.1, ease: "power3.out",
-        scrollTrigger: { trigger: ".reviews-section", start: "top bottom", once: true } }
-    );
-    gsap.fromTo(".review-card",
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, stagger: 0.1, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: ".reviews-track", start: "top bottom", once: true } }
-    );
-
-    /* ─── CAT FILTER ─── */
-    gsap.fromTo(".cat-btn",
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease: "power2.out",
-        scrollTrigger: { trigger: "#cat-filter", start: "top 100%", once: true } }
-    );
-
-    /* ─── BACK LINK EXIT ─── */
-    const backLink = document.querySelector(".back-link") as HTMLAnchorElement | null;
-    if (backLink) {
-      backLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        const href = backLink.getAttribute("href") || "/";
-        const curtain = document.createElement("div");
-        curtain.style.cssText = "position:fixed;inset:0;background:#f6aad9;z-index:9999;transform-origin:bottom;will-change:transform;";
-        gsap.set(curtain, { scaleY: 0 });
-        document.body.appendChild(curtain);
-        gsap.to(".word, .hero-sub", { y: -40, autoAlpha: 0, duration: 0.3, stagger: 0.06, ease: "power2.in" });
-        gsap.to(curtain, {
-          scaleY: 1, duration: 0.65, ease: "power3.inOut",
-          onComplete: () => { window.location.href = href; },
-        });
+    const media = card.querySelector("img, video");
+    if (media) {
+      gsap.fromTo(media, { y: "-8%" }, {
+        y: "8%", ease: "none",
+        scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true },
       });
     }
   });
 
-  mm.add("(prefers-reduced-motion: reduce)", () => {
-    entryCurtain.remove();
-    document.querySelectorAll(".card").forEach(c => {
-      (c as HTMLElement).style.clipPath = "none";
-    });
+  window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+    setTimeout(() => {
+      document.querySelectorAll<HTMLElement>(
+        ".review-card, .reviews-eyebrow, .reviews-label, .mission-title, .mission-body, .cta-label, .cta-btn, .lookbook-label, .lookbook-title, .lookbook-sub, .cat-btn, .marquee-wrap"
+      ).forEach(el => {
+        const computed = window.getComputedStyle(el);
+        if (parseFloat(computed.opacity) < 0.1) gsap.set(el, { opacity: 1, y: 0, x: 0, visibility: "visible" });
+      });
+    }, 800);
   });
+  setTimeout(() => ScrollTrigger.refresh(), 1500);
+
+  /* ─── MISSION + CTA ─── */
+  gsap.from(".mission-top-line", {
+    scaleX: 0, transformOrigin: "left", duration: 1.2, ease: "power3.out",
+    scrollTrigger: { trigger: ".mission", start: "top bottom", once: true },
+  });
+  gsap.fromTo(".mission-title", { opacity: 0, y: 0 }, { opacity: 1, duration: 1, ease: "power2.out", delay: 0.2, scrollTrigger: { trigger: ".mission", start: "top bottom", once: true } });
+  gsap.fromTo(".mission-body",  { opacity: 0, y: 35 }, { opacity: 1, y: 0, duration: 1.1, ease: "power2.out", delay: 0.4, scrollTrigger: { trigger: ".mission", start: "top bottom", once: true } });
+  gsap.from(".cta-divider", { scaleX: 0, transformOrigin: "left", duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".cta-block", start: "top bottom", once: true } });
+  gsap.fromTo(".cta-label", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.2, scrollTrigger: { trigger: ".cta-block", start: "top bottom", once: true } });
+  gsap.fromTo(".cta-btn",   { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, delay: 0.4, scrollTrigger: { trigger: ".cta-block", start: "top bottom", once: true } });
+
+  /* ─── LOOKBOOK PARALLAX ─── */
+  document.querySelectorAll<HTMLElement>(".lookbook-section").forEach(section => {
+    const img   = section.querySelector<HTMLElement>(".lookbook-img");
+    const label = section.querySelector<HTMLElement>(".lookbook-label");
+    const title = section.querySelector<HTMLElement>(".lookbook-title");
+    const sub   = section.querySelector<HTMLElement>(".lookbook-sub");
+    if (img) gsap.fromTo(img, { scale: 1.12 }, { scale: 1, ease: "none", scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: true } });
+    if (label) gsap.fromTo(label, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: section, start: "top bottom", once: true } });
+    if (title) gsap.fromTo(title, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.1, delay: 0.15, ease: "power3.out", scrollTrigger: { trigger: section, start: "top bottom", once: true } });
+    if (sub)   gsap.fromTo(sub,   { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, delay: 0.4, scrollTrigger: { trigger: section, start: "top bottom", once: true } });
+  });
+
+  /* ─── REVIEWS ─── */
+  gsap.fromTo(".reviews-eyebrow", { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, scrollTrigger: { trigger: ".reviews-section", start: "top bottom", once: true } });
+  gsap.fromTo(".reviews-label",   { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, delay: 0.1, ease: "power3.out", scrollTrigger: { trigger: ".reviews-section", start: "top bottom", once: true } });
+  gsap.fromTo(".review-card",     { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.7, ease: "power2.out", scrollTrigger: { trigger: ".reviews-track", start: "top bottom", once: true } });
+
+  /* ─── CAT FILTER ─── */
+  gsap.fromTo(".cat-btn", { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease: "power2.out", scrollTrigger: { trigger: "#cat-filter", start: "top 100%", once: true } });
+
+  /* ─── BACK LINK EXIT ─── */
+  const backLink = document.querySelector(".back-link") as HTMLAnchorElement | null;
+  if (backLink) {
+    backLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = backLink.getAttribute("href") || "/";
+      const curtain = document.createElement("div");
+      curtain.style.cssText = "position:fixed;inset:0;background:#f6aad9;z-index:9999;transform-origin:bottom;will-change:transform;";
+      gsap.set(curtain, { scaleY: 0 });
+      document.body.appendChild(curtain);
+      gsap.to(".word, .hero-sub", { y: -40, autoAlpha: 0, duration: 0.3, stagger: 0.06, ease: "power2.in" });
+      gsap.to(curtain, { scaleY: 1, duration: 0.65, ease: "power3.inOut", onComplete: () => { window.location.href = href; } });
+    });
+  }
 
   /* ── MOBILE LIGHTBOX ── */
   (function () {
