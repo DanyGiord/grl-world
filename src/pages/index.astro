@@ -184,6 +184,8 @@ import New from "../components/New.astro";
     font-size: 20px;
     line-height: 1.6;
     padding-bottom: 320px;
+    position: relative;
+    z-index: 1;
   }
   h1 {
     font-family: "TAN-NIMBUS", sans-serif;
@@ -199,8 +201,8 @@ import New from "../components/New.astro";
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
+    z-index: 0;
+    clip-path: inset(0);
   }
   .cl {
     position: absolute;
